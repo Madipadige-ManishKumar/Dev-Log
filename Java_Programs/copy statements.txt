@@ -1,0 +1,5 @@
+alter table table1
+    -> change column id pin varchar(30) not null;
+alter table t1
+    -> rename to  table1;
+show tables;
