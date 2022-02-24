@@ -1,0 +1,343 @@
+There are mainly two ways to extract data from a website:This article discusses the steps involved in web scraping using the implementation of a Web Scraping framework of Python called Beautiful Soup. Steps involved in web scraping:Step 1: Installing the required third-party librariesStep 2: Accessing the HTML content from webpage  
+  
+
+
+Let us try to understand this piece of code.Note: Sometimes you may get error “Not accepted” so try adding a browser user agent like below. Find your user agent based on device and browser from here https://deviceatlas.com/blog/list-of-user-agent-strings 
+  
+
+
+Step 3: Parsing the HTML content  
+  
+
+
+A really nice thing about the BeautifulSoup library is that it is built on the top of the HTML parsing libraries like html5lib, lxml, html.parser, etc. So  BeautifulSoup object and specify the parser library can be created at the same time. In the example above,We create a BeautifulSoup object by passing two arguments:Now soup.prettify() is printed, it gives the visual representation of the parse tree created from the raw HTML content. Step 4: Searching and navigating through the parse tree Now, we would like to extract some useful data from the HTML content. The soup object contains all the data in the nested structure which could be programmatically extracted. In our example, we are scraping a webpage consisting of some quotes. So, we would like to create a program to save those quotes (and all relevant information about them).  
+  
+
+
+Before moving on, we recommend you to go through the HTML content of the webpage which we printed using soup.prettify() method and try to find a pattern or a way to navigate to the quotes.So, this was a simple example of how to create a web scraper in Python.  From here, you can try to scrap any other website of your choice. In case of any queries, post them below in comments section.Note : Web Scraping is considered as illegal in many cases. It may also cause your IP to be blocked permanently by a website. This blog is contributed by Nikhil Kumar.  
+pip install beautifulsoup4
+
+
+Copy PIP instructions
+
+
+Released: 
+  Jan 17, 2024
+ Screen-scraping library
+View statistics for this project via Libraries.io, or by using our public dataset on Google BigQuery License: MIT License (MIT License)Author: Leonard Richardson
+
+Tags
+
+      HTML,    
+
+      XML,    
+
+      parse,    
+
+      soup    
+
+Requires: Python >=3.6.0
+  Beautiful Soup is a library that makes it easy to scrape information
+from web pages. It sits atop an HTML or XML parser, providing Pythonic
+idioms for iterating, searching, and modifying the parse tree.To go beyond the basics, comprehensive documentation is available.Beautiful Soup's support for Python 2 was discontinued on December 31,
+2020: one year after the sunset date for Python 2 itself. From this
+point onward, new Beautiful Soup development will exclusively target
+Python 3. The final release of Beautiful Soup 4 to support Python 2
+was 4.9.3.If you use Beautiful Soup as part of your professional work, please consider a
+Tidelift subscription.
+This will support many of the free software projects your organization
+depends on, not just Beautiful Soup.If you use Beautiful Soup for personal projects, the best way to say
+thank you is to read
+Tool Safety, a zine I
+wrote about what Beautiful Soup has taught me about software
+development.The bs4/doc/ directory contains full documentation in Sphinx
+format. Run make html in that directory to create HTML
+documentation.Beautiful Soup supports unit test discovery using Pytest:
+View statistics for this project via Libraries.io, or by using our public dataset on Google BigQuery License: MIT License (MIT License)Author: Leonard Richardson
+
+Tags
+
+      HTML,    
+
+      XML,    
+
+      parse,    
+
+      soup    
+
+Requires: Python >=3.6.0
+  
+                  4.13.0b2
+                  
+pre-release                  
+
+
+  Mar 20, 2024
+
+
+                  4.12.3
+                
+
+  Jan 17, 2024
+
+
+                  4.12.2
+                
+
+  Apr 7, 2023
+
+
+                  4.12.1
+                
+
+  Apr 5, 2023
+
+
+                  4.12.0
+                
+
+  Mar 20, 2023
+
+
+                  4.11.2
+                
+
+  Jan 31, 2023
+
+
+                  4.11.1
+                
+
+  Apr 8, 2022
+
+
+                  4.11.0
+                
+
+  Apr 7, 2022
+
+
+                  4.10.0
+                
+
+  Sep 8, 2021
+
+
+                  4.9.3
+                
+
+  Oct 3, 2020
+
+
+                  4.9.2
+                
+
+  Sep 26, 2020
+
+
+                  4.9.1
+                
+
+  May 17, 2020
+
+
+                  4.9.0
+                
+
+  Apr 5, 2020
+
+
+                  4.8.2
+                
+
+  Dec 24, 2019
+
+
+                  4.8.1
+                
+
+  Oct 6, 2019
+
+
+                  4.8.0
+                
+
+  Jul 20, 2019
+
+
+                  4.7.1
+                
+
+  Jan 7, 2019
+
+
+                  4.7.0
+                
+
+  Dec 31, 2018
+
+
+                  4.6.3
+                
+
+  Aug 12, 2018
+
+
+                  4.6.2
+                
+
+  Aug 12, 2018
+
+
+                  4.6.1
+                
+
+  Jul 28, 2018
+
+
+                  4.6.0
+                
+
+  May 7, 2017
+
+
+                  4.5.3
+                
+
+  Jan 2, 2017
+
+
+                  4.5.2
+                
+
+  Jan 2, 2017
+
+
+                  4.5.1
+                
+
+  Aug 3, 2016
+
+
+                  4.5.0
+                
+
+  Jul 20, 2016
+
+
+                  4.4.1
+                
+
+  Sep 29, 2015
+
+
+                  4.4.0
+                
+
+  Jul 3, 2015
+
+
+                  4.3.2
+                
+
+  Oct 2, 2013
+
+
+                  4.3.1
+                
+
+  Jan 21, 2014
+
+
+                  4.3.0
+                
+
+  Jan 21, 2014
+
+
+                  4.2.1
+                
+
+  Jan 21, 2014
+
+
+                  4.2.0
+                
+
+  Jan 21, 2014
+
+
+                  4.1.3
+                
+
+  Jan 21, 2014
+
+
+                  4.1.2
+                
+
+  Jan 21, 2014
+
+
+                  4.1.1
+                
+
+  Jan 21, 2014
+
+
+                  4.1.0
+                
+
+  Jan 21, 2014
+
+
+                  4.0.5
+                
+
+  Jan 21, 2014
+
+
+                  4.0.4
+                
+
+  Jan 21, 2014
+
+
+                  4.0.3
+                
+
+  Jan 21, 2014
+
+
+                  4.0.2
+                
+
+  Jan 21, 2014
+
+
+                  4.0.1
+                
+
+  Jan 21, 2014
+
+Download the file for your platform. If you're not sure which to choose, learn more about installing packages.
+          Uploaded 
+  Jan 17, 2024
+
+Source
+
+          Uploaded 
+  Jan 17, 2024
+
+Python 3
+Status:
+all systems operational
+
+Developed and maintained by the Python community, for the Python community.          
+Donate today!
+
+          "PyPI", "Python Package Index", and the blocks logos are registered trademarks of the Python Software Foundation.
+
+          © 2024 Python Software Foundation
+Site map
+Supported by— FREE Email Series —
