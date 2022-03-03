@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Array Largest Sum Visualizer</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --panel: #ffffff;
+            --primary: #0f172a;
+            --accent: #8b5cf6;
+            --split-line: #ef4444;
+            --code-bg: #1e293b;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); color: var(--primary); }
+
+        /* Left Panel */
+        .left-panel { flex: 1.2; padding: 25px; background: var(--panel); border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .ps-box { background: #f5f3ff; padding: 15px; border-radius: 10px; border-left: 5px solid var(--accent); margin-bottom: 20px; }
+        .logic-point { background: #fef2f2; padding: 12px; border-radius: 8px; border-left: 5px solid var(--split-line); margin-bottom: 20px; font-size: 0.9rem; }
+
+        .code-block { background: var(--code-bg); padding: 18px; border-radius: 12px; color: #cbd5e1; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.6; }
+        .keyword { color: #ff7b72; }
+        .func { color: #d2a8ff; }
+        .line { padding: 0 10px; border-left: 3px solid transparent; transition: 0.3s; }
+        .active-line { background: #334155; border-left-color: var(--accent); color: #fff; }
+
+        /* Right Panel */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; overflow-y: auto; }
+        
+        .pill-row { display: flex; gap: 10px; margin-bottom: 25px; }
+        .pill { padding: 8px 16px; border-radius: 20px; font-weight: 700; color: white; background: var(--primary); font-size: 13px; }
+
+        .array-display { display: flex; align-items: center; gap: 10px; margin: 40px 0; flex-wrap: wrap; justify-content: center; }
+        .num-box { width: 50px; height: 50px; background: white; border: 2px solid #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; position: relative; }
+        .split-marker { width: 4px; height: 60px; background: var(--split-line); border-radius: 2px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+
+        .status-msg { width: 90%; background: white; padding: 15px; border-radius: 8px; margin: 15px 0; border-top: 4px solid var(--accent); font-size: 0.9rem; }
+
+        .search-visual { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+        .cell { width: 32px; height: 32px; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 10px; border-radius: 4px; background: white; }
+        .cell-mid { background: var(--accent) !important; color: white; font-weight: bold; transform: scale(1.1); }
+        .cell-off { opacity: 0.2; }
+
+        button { padding: 12px 28px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; background: var(--accent); color: white; }
+        .btn-reset { background: #64748b; margin-right: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h1>Split Array Largest Sum</h1>
+    
+    <div class="ps-box">
+        <b>Task:</b> Split array <code>nums</code> into <code>k</code> contiguous subarrays. <b>Minimize the maximum sum</b> among these subarrays.
+    </div>
+
+    <div class="logic-point">
+        <b>The Split Logic:</b> We "walk" through the array. If adding the next number makes the current sum > <code>mid</code>, we <b>must</b> split.
+    </div>
+
+    <div class="code-block">
+        <div class="line" id="l1"><span class="keyword">def</span> <span class="func">splitArray</span>(nums, k):</div>
+        <div class="line" id="l2">&nbsp;&nbsp;low, high = <span class="func">max</span>(nums), <span class="func">sum</span>(nums)</div>
+        <div class="line" id="l3">&nbsp;&nbsp;<span class="keyword">while</span> low <= high:</div>
+        <div class="line" id="l4">&nbsp;&nbsp;&nbsp;&nbsp;mid = (low + high) // 2</div>
+        <div class="line" id="l5">&nbsp;&nbsp;&nbsp;&nbsp;chunks, current_sum = 1, 0</div>
+        <div class="line" id="l6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> n <span class="keyword">in</span> nums:</div>
+        <div class="line" id="l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> current_sum + n <= mid:</div>
+        <div class="line" id="l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_sum += n</div>
+        <div class="line" id="l9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:</div>
+        <div class="line" id="l10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunks += 1</div>
+        <div class="line" id="l11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_sum = n</div>
+        <div class="line" id="l12">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> chunks <= k: <span class="func"># Valid</span></div>
+        <div class="line" id="l13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans = mid</div>
+        <div class="line" id="l14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high = mid - 1</div>
+        <div class="line" id="l15">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>: low = mid + 1</div>
+    </div>
+</div>
+
+<div class="right-panel">
+    <div class="pill-row">
+        <div class="pill">Limit (k): 2 Subarrays</div>
+        <div class="pill" style="background:var(--accent)">Mid (Test Sum): <span id="val-mid">?</span></div>
+        <div class="pill" style="background:var(--split-line)">Subarrays Needed: <span id="val-chunks">0</span></div>
+    </div>
+
+    <div class="status-msg" id="status">
+        Initialize: Range [10 to 32]. Click Next Step.
+    </div>
+
+    <div class="array-display" id="array-ui"></div>
+
+    <div class="search-visual" id="search-space"></div>
+
+    <div style="margin-top:30px;">
+        <button class="btn-reset" onclick="reset()">Reset</button>
+        <button onclick="nextStep()" id="next-btn">Next Step</button>
+    </div>
+</div>
+
+<script>
+    const nums = [7, 2, 5, 10, 8];
+    const K = 2;
+    let low = Math.max(...nums), high = nums.reduce((a,b)=>a+b, 0), ans = high;
+    let finished = false;
+
+    function init() {
+        const ui = document.getElementById('array-ui');
+        ui.innerHTML = '';
+        nums.forEach((n, i) => {
+            ui.innerHTML += `<div class="num-box" id="n-${i}">${n}</div>`;
+        });
+
+        const space = document.getElementById('search-space');
+        space.innerHTML = '';
+        for(let i=low; i<=high; i++) {
+            space.innerHTML += `<div class="cell" id="c-${i}">${i}</div>`;
+        }
+    }
+
+    function setHighlight(lines) {
+        document.querySelectorAll('.line').forEach(l => l.classList.remove('active-line'));
+        lines.forEach(n => document.getElementById(`l${n}`).classList.add('active-line'));
+    }
+
+    function nextStep() {
+        if (finished || low > high) {
+            document.getElementById('status').innerHTML = `<b style="color:var(--accent)">Optimal Largest Sum: ${ans}</b>`;
+            finished = true;
+            document.getElementById('next-btn').disabled = true;
+            return;
+        }
+
+        let mid = Math.floor((low + high) / 2);
+        document.getElementById('val-mid').innerText = mid;
+
+        // Greedy Simulation
+        let chunks = 1, currentSum = 0;
+        const ui = document.getElementById('array-ui');
+        ui.innerHTML = '';
+        
+        nums.forEach((n, i) => {
+            if (currentSum + n > mid) {
+                chunks++;
+                currentSum = n;
+                ui.innerHTML += `<div class="split-marker"></div>`;
+            } else {
+                currentSum += n;
+            }
+            ui.innerHTML += `<div class="num-box">${n}</div>`;
+        });
+
+        document.getElementById('val-chunks').innerText = chunks;
+
+        for(let i=Math.max(...nums); i<=nums.reduce((a,b)=>a+b,0); i++) {
+            const cell = document.getElementById(`c-${i}`);
+            if(cell) cell.className = 'cell' + (i < low || i > high ? ' cell-off' : '') + (i === mid ? ' cell-mid' : '');
+        }
+
+        if (chunks <= K) {
+            ans = mid;
+            document.getElementById('status').innerHTML = `With limit <b>${mid}</b>, we used <b>${chunks}</b> subarrays. Valid! Trying <b>smaller</b> sum.`;
+            setHighlight([12, 13, 14]);
+            high = mid - 1;
+        } else {
+            document.getElementById('status').innerHTML = `With limit <b>${mid}</b>, we needed <b>${chunks}</b> subarrays. Too many! <b>Increase</b> sum.`;
+            setHighlight([15]);
+            low = mid + 1;
+        }
+    }
+
+    function reset() {
+        low = Math.max(...nums); high = nums.reduce((a,b)=>a+b, 0); finished = false;
+        document.getElementById('next-btn').disabled = false;
+        document.getElementById('status').innerText = "Range reset.";
+        init();
+    }
+
+    init();
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship Packages - Complete Visualizer</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --panel-bg: #ffffff;
+            --primary: #1e293b;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --code-bg: #0f172a;
+            --package: #f97316;
+        }
+
+        body { font-family: 'Inter', system-ui, sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg-color); color: var(--primary); }
+
+        /* Left Panel: PS and Code */
+        .left-panel { flex: 1.2; padding: 30px; background: var(--panel-bg); border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        
+        .section { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--accent); }
+        .rule-list { padding-left: 20px; font-size: 0.9rem; line-height: 1.5; }
+
+        .code-block { background: var(--code-bg); padding: 20px; border-radius: 12px; color: #cbd5e1; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.6; margin-top: 15px; }
+        .keyword { color: #ff7b72; }
+        .func { color: #d2a8ff; }
+        .line { padding: 0 10px; border-left: 3px solid transparent; transition: 0.3s; }
+        .active-line { background: #1e293b; border-left-color: var(--accent); color: #fff; }
+
+        /* Right Panel: Visualization */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; overflow-y: auto; }
+        
+        .conveyor { display: flex; gap: 8px; margin: 20px 0; padding: 15px; background: #cbd5e1; border-radius: 8px; width: 90%; overflow-x: auto; border: 2px solid #94a3b8; }
+        .package { background: var(--package); color: white; padding: 8px; border-radius: 4px; font-weight: bold; min-width: 30px; text-align: center; box-shadow: 0 2px 0 #c2410c; }
+
+        .trucks-grid { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; justify-content: center; margin-top: 20px; }
+        .truck { background: white; border: 2px solid var(--primary); padding: 10px; border-radius: 8px; min-width: 130px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .truck-header { font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 8px; text-transform: uppercase; }
+
+        .pill-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .pill { padding: 8px 16px; border-radius: 8px; font-weight: 700; color: white; background: var(--primary); font-size: 14px; }
+
+        .search-space { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; margin-top: 20px; max-width: 95%; }
+        .cell { width: 32px; height: 32px; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 4px; background: white; }
+        .cell-mid { background: var(--accent) !important; color: white; font-weight: bold; transform: scale(1.1); }
+        .cell-off { opacity: 0.2; background: #e2e8f0; }
+
+        .status-msg { width: 90%; background: white; padding: 15px; border-radius: 8px; margin: 15px 0; border-top: 4px solid var(--accent); font-size: 0.95rem; }
+
+        .controls button { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .btn-next { background: var(--accent); color: white; }
+        .btn-reset { background: #64748b; color: white; margin-right: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h1>Capacity To Ship Packages</h1>
+    
+    <div class="section">
+        <h3>Problem Statement</h3>
+        <p>A conveyor belt has packages with weights <code>w[i]</code>. We must ship them in <b>D days</b>.</p>
+        <ul class="rule-list">
+            <li>Packages must be shipped in the <b>exact order</b> given.</li>
+            <li>We load one ship per day.</li>
+            <li>Find the <b>minimum</b> weight capacity to succeed.</li>
+        </ul>
+    </div>
+
+    <div class="code-block">
+        <div class="line" id="l1"><span class="keyword">def</span> <span class="func">shipWithinDays</span>(weights, days):</div>
+        <div class="line" id="l2">&nbsp;&nbsp;low, high = <span class="func">max</span>(weights), <span class="func">sum</span>(weights)</div>
+        <div class="line" id="l3">&nbsp;&nbsp;<span class="keyword">while</span> low <= high:</div>
+        <div class="line" id="l4">&nbsp;&nbsp;&nbsp;&nbsp;mid = (low + high) // 2</div>
+        <div class="line" id="l5" style="padding-left: 20px;"><span class="func"># can_ship simulation:</span></div>
+        <div class="line" id="l6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> used_days <= days:</div>
+        <div class="line" id="l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans = mid</div>
+        <div class="line" id="l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high = mid - 1</div>
+        <div class="line" id="l9">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:</div>
+        <div class="line" id="l10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low = mid + 1</div>
+        <div class="line" id="l11">&nbsp;&nbsp;<span class="keyword">return</span> ans</div>
+    </div>
+</div>
+
+<div class="right-panel">
+    <div class="pill-box">
+        <div class="pill">Ship Limit: 5 Days</div>
+        <div class="pill" style="background:var(--success)">Used: <span id="val-days">0</span> Days</div>
+        <div class="pill" style="background:var(--accent)">Test Cap: <span id="val-cap">?</span></div>
+    </div>
+
+    <div class="conveyor" id="conveyor"></div>
+
+    <div class="status-msg" id="status">
+        Range: [Max Weight (10) to Total Sum (55)]. Click <b>Next Step</b>.
+    </div>
+    
+    <div class="trucks-grid" id="trucks"></div>
+
+    <div class="search-space" id="search-space"></div>
+
+    <div class="controls" style="margin-top:20px;">
+        <button class="btn-reset" onclick="reset()">Reset</button>
+        <button class="btn-next" id="next-btn" onclick="nextStep()">Next Step</button>
+    </div>
+</div>
+
+<script>
+    const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const D = 5;
+    let low = Math.max(...weights), high = weights.reduce((a,b)=>a+b, 0), ans = high;
+    let finished = false;
+
+    function init() {
+        const conv = document.getElementById('conveyor');
+        conv.innerHTML = '';
+        weights.forEach(w => conv.innerHTML += `<div class="package">${w}</div>`);
+
+        const space = document.getElementById('search-space');
+        space.innerHTML = '';
+        for(let i=low; i<=high; i++) {
+            space.innerHTML += `<div class="cell" id="s-${i}">${i}</div>`;
+        }
+    }
+
+    function setHighlight(lines) {
+        document.querySelectorAll('.line').forEach(l => l.classList.remove('active-line'));
+        lines.forEach(n => document.getElementById(`l${n}`).classList.add('active-line'));
+    }
+
+    function nextStep() {
+        if (finished || low > high) {
+            document.getElementById('status').innerHTML = `<b style="color:var(--success)">Optimal Capacity Found: ${ans} units!</b>`;
+            finished = true;
+            document.getElementById('next-btn').disabled = true;
+            setHighlight([11]);
+            return;
+        }
+
+        let mid = Math.floor((low + high) / 2);
+        document.getElementById('val-cap').innerText = mid;
+
+        let dayCount = 1, currentLoad = 0;
+        const trucksUI = document.getElementById('trucks');
+        trucksUI.innerHTML = `<div class="truck" id="t-1"><div class="truck-header">Day 1</div></div>`;
+        
+        weights.forEach(w => {
+            if (currentLoad + w > mid) {
+                dayCount++;
+                currentLoad = w;
+                trucksUI.innerHTML += `<div class="truck" id="t-${dayCount}"><div class="truck-header">Day ${dayCount}</div></div>`;
+            } else {
+                currentLoad += w;
+            }
+            document.getElementById(`t-${dayCount}`).innerHTML += `<span style="font-size:12px; margin:2px; padding:2px 4px; background:#f97316; color:white; border-radius:3px;">${w}</span>`;
+        });
+
+        document.getElementById('val-days').innerText = dayCount;
+
+        for(let i=Math.max(...weights); i<=weights.reduce((a,b)=>a+b, 0); i++) {
+            const cell = document.getElementById(`s-${i}`);
+            cell.className = 'cell' + (i < low || i > high ? ' cell-off' : '') + (i === mid ? ' cell-mid' : '');
+        }
+
+        if (dayCount <= D) {
+            ans = mid;
+            document.getElementById('status').innerHTML = `Used <b>${dayCount}</b> days. Capacity ${mid} works! Try <b>smaller</b> capacity.`;
+            setHighlight([6, 7, 8]);
+            high = mid - 1;
+        } else {
+            document.getElementById('status').innerHTML = `Used <b>${dayCount}</b> days. Too many! Increase capacity to ship <b>faster</b>.`;
+            setHighlight([6, 9, 10]);
+            low = mid + 1;
+        }
+    }
+
+    function reset() {
+        low = Math.max(...weights); high = weights.reduce((a,b)=>a+b, 0); finished = false;
+        document.getElementById('next-btn').disabled = false;
+        document.getElementById('trucks').innerHTML = '';
+        document.getElementById('val-cap').innerText = '?';
+        document.getElementById('val-days').innerText = '0';
+        setHighlight([2, 3, 4]);
+        init();
+    }
+
+    init();
+    setHighlight([1, 2]);
+</script>
+</body>
+</html>
