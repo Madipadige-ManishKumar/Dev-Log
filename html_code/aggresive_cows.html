@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggressive Cows - Binary Search Visualizer</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --panel-bg: #ffffff;
+            --primary: #1e293b;
+            --accent: #f59e0b;
+            --cow-color: #4f46e5;
+            --code-bg: #0f172a;
+            --success: #10b981;
+        }
+
+        body { font-family: 'Inter', system-ui, sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg-color); color: var(--primary); }
+
+        /* Left Panel: Description & Code */
+        .left-panel { flex: 1.2; padding: 30px; background: var(--panel-bg); border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        
+        .section { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--cow-color); }
+        .logic-list { padding-left: 20px; font-size: 0.9rem; line-height: 1.6; color: #475569; }
+
+        .code-block { background: var(--code-bg); padding: 20px; border-radius: 12px; color: #cbd5e1; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.6; margin-top: 15px; }
+        .keyword { color: #ff7b72; }
+        .func { color: #d2a8ff; }
+        .line { padding: 0 10px; border-left: 3px solid transparent; transition: 0.3s; }
+        .active-line { background: #1e293b; border-left-color: var(--accent); color: #fff; }
+
+        /* Right Panel: Visualization */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; overflow-y: auto; }
+        
+        /* Stall Visualization */
+        .stall-track { width: 90%; height: 100px; background: #e2e8f0; border-radius: 50px; position: relative; margin: 50px 0; border: 4px solid #94a3b8; }
+        .stall { position: absolute; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .stall-box { width: 40px; height: 40px; background: white; border: 2px solid #64748b; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.4s; }
+        .stall-box.has-cow { background: var(--cow-color); border-color: var(--cow-color); transform: scale(1.2) translateY(-10px); color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); }
+        .stall-id { margin-top: 10px; font-weight: 800; font-size: 12px; color: #475569; }
+
+        .pill-box { display: flex; gap: 12px; margin-bottom: 20px; }
+        .pill { padding: 8px 16px; border-radius: 8px; font-weight: 700; color: white; background: var(--primary); font-size: 14px; }
+
+        .status-msg { width: 90%; background: white; padding: 15px; border-radius: 8px; margin: 15px 0; border-top: 4px solid var(--accent); font-size: 0.95rem; line-height: 1.4; }
+
+        .search-row { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; margin-top: 20px; max-width: 95%; }
+        .cell { width: 32px; height: 32px; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 4px; background: white; }
+        .cell-mid { background: var(--accent) !important; color: white; font-weight: bold; transform: scale(1.1); }
+        .cell-off { opacity: 0.2; background: #e2e8f0; }
+
+        .controls { display: flex; gap: 12px; margin-top: 20px; }
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .btn-next { background: var(--cow-color); color: white; }
+        .btn-reset { background: #64748b; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h1 style="margin-top:0; color: var(--cow-color);">Aggressive Cows</h1>
+    
+    <div class="section">
+        <h3>Problem Statement</h3>
+        <p>Place <b>K</b> cows in stalls at positions <code>stalls[i]</code> such that the <b>minimum distance</b> between any two is as <b>large</b> as possible.</p>
+        <ul class="logic-list">
+            <li><b>Sorted:</b> Stalls must be sorted to use greedy checking.</li>
+            <li><b>Binary Search Range:</b> 1 to (Max position - Min position).</li>
+            <li><b>Goal:</b> Maximize the minimum.</li>
+        </ul>
+    </div>
+
+    <div class="code-block">
+        <div class="line" id="l1"><span class="keyword">def</span> <span class="func">aggressiveCows</span>(stalls, k):</div>
+        <div class="line" id="l2">&nbsp;&nbsp;stalls.<span class="func">sort</span>()</div>
+        <div class="line" id="l3">&nbsp;&nbsp;low, high = 1, stalls[-1] - stalls[0]</div>
+        <div class="line" id="l4">&nbsp;&nbsp;<span class="keyword">while</span> low <= high:</div>
+        <div class="line" id="l5">&nbsp;&nbsp;&nbsp;&nbsp;mid = (low + high) // 2</div>
+        <div class="line" id="l6" style="padding-left: 20px;"><span class="func"># canPlace(mid) greedy logic:</span></div>
+        <div class="line" id="l7">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> <span class="func">canPlace</span>(mid, k):</div>
+        <div class="line" id="l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans = mid</div>
+        <div class="line" id="l9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low = mid + 1</div>
+        <div class="line" id="l10">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:</div>
+        <div class="line" id="l11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high = mid - 1</div>
+        <div class="line" id="l12">&nbsp;&nbsp;<span class="keyword">return</span> ans</div>
+    </div>
+</div>
+
+<div class="right-panel">
+    <div class="pill-box">
+        <div class="pill">Cows Needed: 3</div>
+        <div class="pill" style="background:var(--cow-color)">Placed: <span id="val-cows">0</span></div>
+        <div class="pill" style="background:var(--accent)">Testing Dist: <span id="val-dist">?</span></div>
+    </div>
+
+    <div class="status-msg" id="status">
+        Ready to search for the largest minimum distance. Click <b>Next Step</b>.
+    </div>
+
+    <div class="stall-track" id="track"></div>
+
+    <div class="search-row" id="search-row"></div>
+
+    <div class="controls">
+        <button class="btn-reset" onclick="reset()">Reset</button>
+        <button class="btn-next" id="next-btn" onclick="nextStep()">Next Step</button>
+    </div>
+</div>
+
+<script>
+    const stalls = [1, 2, 4, 8, 9];
+    const K = 3;
+    let low = 1, high = Math.max(...stalls) - Math.min(...stalls), ans = 1;
+    let finished = false;
+
+    function init() {
+        const track = document.getElementById('track');
+        track.innerHTML = '';
+        const maxVal = Math.max(...stalls);
+        stalls.forEach(s => {
+            const pos = (s / maxVal) * 95;
+            track.innerHTML += `
+                <div class="stall" style="left: ${pos}%">
+                    <div class="stall-box" id="s-${s}">🏠</div>
+                    <div class="stall-id">${s}</div>
+                </div>`;
+        });
+
+        const row = document.getElementById('search-row');
+        row.innerHTML = '';
+        for(let i=1; i<=high; i++) {
+            row.innerHTML += `<div class="cell" id="c-${i}">${i}</div>`;
+        }
+    }
+
+    function setHighlight(lines) {
+        document.querySelectorAll('.line').forEach(l => l.classList.remove('active-line'));
+        lines.forEach(n => document.getElementById(`l${n}`).classList.add('active-line'));
+    }
+
+    function nextStep() {
+        if (finished || low > high) {
+            document.getElementById('status').innerHTML = `<b style="color:var(--success)">Search Complete! Max Min Distance: ${ans} units.</b>`;
+            finished = true;
+            document.getElementById('next-btn').disabled = true;
+            setHighlight([12]);
+            return;
+        }
+
+        let mid = Math.floor((low + high) / 2);
+        document.getElementById('val-dist').innerText = mid;
+
+        // Visual for Search Space
+        for(let i=1; i<=Math.max(...stalls)-Math.min(...stalls); i++) {
+            const cell = document.getElementById(`c-${i}`);
+            cell.className = 'cell' + (i < low || i > high ? ' cell-off' : '') + (i === mid ? ' cell-mid' : '');
+        }
+
+        // Greedy Placement Simulation
+        let count = 1;
+        let lastPos = stalls[0];
+        
+        stalls.forEach(s => {
+            const box = document.getElementById(`s-${s}`);
+            box.classList.remove('has-cow');
+            box.innerText = '🏠';
+        });
+
+        // Place first cow
+        const firstBox = document.getElementById(`s-${stalls[0]}`);
+        firstBox.classList.add('has-cow');
+        firstBox.innerText = '🐄';
+
+        for(let i=1; i<stalls.length; i++) {
+            if (stalls[i] - lastPos >= mid && count < K) {
+                count++;
+                lastPos = stalls[i];
+                const box = document.getElementById(`s-${stalls[i]}`);
+                box.classList.add('has-cow');
+                box.innerText = '🐄';
+            }
+        }
+
+        document.getElementById('val-cows').innerText = count;
+
+        if (count >= K) {
+            ans = mid;
+            document.getElementById('status').innerHTML = `Placed <b>${count}</b> cows with min dist <b>${mid}</b>. It works! Trying <b>larger</b> distance.`;
+            setHighlight([7, 8, 9]);
+            low = mid + 1;
+        } else {
+            document.getElementById('status').innerHTML = `Only placed <b>${count}</b> cows. Dist <b>${mid}</b> is too large! Trying <b>smaller</b>.`;
+            setHighlight([7, 10, 11]);
+            high = mid - 1;
+        }
+    }
+
+    function reset() {
+        low = 1; high = Math.max(...stalls) - Math.min(...stalls); ans = 1; finished = false;
+        document.getElementById('next-btn').disabled = false;
+        document.getElementById('status').innerText = "Range reset. Testing middle distance...";
+        document.getElementById('val-cows').innerText = '0';
+        document.getElementById('val-dist').innerText = '?';
+        setHighlight([3, 4, 5]);
+        init();
+    }
+
+    init();
+    setHighlight([1, 2, 3]);
+</script>
+</body>
+</html>
