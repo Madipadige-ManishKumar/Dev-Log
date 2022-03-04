@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2D Peak Element II - Interactive Guide</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --peak: #10b981;
+            --code-bg: #0d1117;
+            --kw: #ff7b72;
+            --fn: #d2a8ff;
+            --cm: #8b949e;
+            --num: #79c0ff;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); color: var(--primary); }
+
+        /* Left Panel */
+        .left-panel { flex: 1.2; padding: 25px; background: white; border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin: 20px 0 10px; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; }
+        .ps-box { background: #f1f5f9; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;}
+        
+        pre {
+            background: var(--code-bg);
+            color: #c9d1d9;
+            padding: 18px;
+            border-radius: 10px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
+            border: 1px solid #30363d;
+        }
+        .k { color: var(--kw); } .f { color: var(--fn); } .c { color: var(--cm); } .n { color: var(--num); }
+
+        /* Right Panel */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; overflow-y: auto; }
+        .status-card { width: 90%; background: white; padding: 15px; border-radius: 8px; border-top: 4px solid var(--accent); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .matrix-grid { display: grid; grid-template-columns: repeat(5, 55px); gap: 10px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .cell { width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 8px; border: 2px solid #e2e8f0; background: #fff; transition: 0.3s; font-size: 14px; }
+        
+        .active-col { background: #eff6ff; border-color: var(--accent); }
+        .max-in-col { background: #fef3c7; border-color: #f59e0b; transform: scale(1.05); z-index: 5; }
+        .peak-found { background: var(--peak) !important; color: white; border-color: #059669; transform: scale(1.15); z-index: 10; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; background: var(--primary); color: white; transition: 0.2s; }
+        button:hover { background: #334155; }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <div class="section-title">Problem Statement</div>
+    <div class="ps-box">
+        Find a 2D Peak element. An element is a peak if:
+        <code>mat[i][j] ></code> its neighbors (Up, Down, Left, Right).
+    </div>
+
+    <div class="section-title">Binary Search Logic</div>
+    <div class="ps-box">
+        1. Binary search on <b>columns</b>.<br>
+        2. Find the <b>row index</b> of the maximum element in the <code>mid_col</code>.<br>
+        3. Since it's the max in its column, it's already > its Top/Bottom neighbors.<br>
+        4. Compare it to Left/Right neighbors and move the search range.
+    </div>
+
+    <div class="section-title">Python Implementation</div>
+<pre>
+<span class="k">while</span> low <= high:
+    mid = (low + high) // <span class="n">2</span>
+    <span class="c"># Max element in current column</span>
+    max_r = <span class="n">0</span>
+    <span class="k">for</span> r <span class="k">in</span> <span class="f">range</span>(rows):
+        <span class="k">if</span> mat[r][mid] > mat[max_r][mid]:
+            max_r = r
+
+    <span class="k">if</span> mat[max_r][mid] > left <span class="k">and</span> right:
+        <span class="k">return</span> [max_r, mid]
+    <span class="k">elif</span> left > mat[max_r][mid]:
+        high = mid - <span class="n">1</span>
+    <span class="k">else</span>:
+        low = mid + <span class="n">1</span>
+</pre>
+</div>
+
+<div class="right-panel">
+    <div id="status" class="status-card">Initial Range: Columns [0 - 4]. Click <b>Run Step</b>.</div>
+    <div id="grid" class="matrix-grid"></div>
+    <div class="btn-group">
+        <button id="stepBtn" onclick="step()">Run Binary Step</button>
+        <button onclick="location.reload()" style="background:#64748b">Reset</button>
+    </div>
+</div>
+
+<script>
+    const matrix = [
+        [10, 20, 15, 21, 10],
+        [30, 32, 16, 25, 12],
+        [15, 17, 10, 22, 10],
+        [28, 50, 40, 23, 11]
+    ];
+    let low = 0, high = 4;
+    let finished = false;
+
+    function initGrid() {
+        const grid = document.getElementById('grid');
+        for(let i=0; i<4; i++) {
+            for(let j=0; j<5; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.id = `cell-${i}-${j}`;
+                cell.innerText = matrix[i][j];
+                grid.appendChild(cell);
+            }
+        }
+    }
+
+    function step() {
+        if(finished || low > high) return;
+
+        let mid = Math.floor((low + high) / 2);
+        
+        // Reset Visuals
+        document.querySelectorAll('.cell').forEach(c => c.className = 'cell');
+
+        // Step 1: Highlight Search Column
+        for(let i=0; i<4; i++) document.getElementById(`cell-${i}-${mid}`).classList.add('active-col');
+
+        // Step 2: Find Max in Col
+        let maxR = 0;
+        for(let i=0; i<4; i++) {
+            if(matrix[i][mid] > matrix[maxR][mid]) maxR = i;
+        }
+        const currentCell = document.getElementById(`cell-${maxR}-${mid}`);
+        currentCell.classList.add('max-in-col');
+
+        let val = matrix[maxR][mid];
+        let left = mid > 0 ? matrix[maxR][mid-1] : -1;
+        let right = mid < 4 ? matrix[maxR][mid+1] : -1;
+
+        if(val > left && val > right) {
+            document.getElementById('status').innerHTML = `<b>Peak Found!</b> [${maxR}, ${mid}] = <b>${val}</b> is greater than Left(${left}) and Right(${right}).`;
+            currentCell.classList.add('peak-found');
+            finished = true;
+            document.getElementById('stepBtn').disabled = true;
+        } else if (left > val) {
+            document.getElementById('status').innerHTML = `Left neighbor (${left}) > ${val}. Narrowing search to <b>Left Half</b>.`;
+            high = mid - 1;
+        } else {
+            document.getElementById('status').innerHTML = `Right neighbor (${right}) > ${val}. Narrowing search to <b>Right Half</b>.`;
+            low = mid + 1;
+        }
+    }
+
+    initGrid();
+</script>
+</body>
+</html>

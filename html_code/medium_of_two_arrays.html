@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Median of Two Sorted Arrays - Complete Visualizer</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --primary: #0f172a;
+            --accent: #8b5cf6;
+            --array1: #3b82f6;
+            --array2: #10b981;
+            --code-bg: #0f172a;
+            --comment: #6a737d;
+            --keyword: #ff7b72;
+            --func: #d2a8ff;
+            --num: #79c0ff;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); color: var(--primary); }
+
+        /* Left Panel */
+        .left-panel { flex: 1.2; padding: 25px; background: white; border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .ps-box { background: #f1f5f9; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primary); margin-bottom: 20px; }
+        
+        .code-block { background: var(--code-bg); padding: 20px; border-radius: 12px; color: #cbd5e1; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.6; margin-top: 10px; overflow-x: auto;}
+        .keyword { color: var(--keyword); }
+        .func { color: var(--func); }
+        .comment { color: var(--comment); font-style: italic; }
+        .num { color: var(--num); }
+        .indent-1 { padding-left: 20px; }
+        .indent-2 { padding-left: 40px; }
+        .indent-3 { padding-left: 60px; }
+
+        /* Right Panel */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; overflow-y: auto; }
+        .status-msg { width: 90%; background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-top: 4px solid var(--accent); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .partition-table { border-collapse: collapse; margin: 20px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .partition-table td { padding: 15px; border: 1px solid #e2e8f0; text-align: center; width: 90px; }
+        .l-val { color: var(--array1); font-weight: bold; }
+        .r-val { color: var(--array2); font-weight: bold; }
+        
+        .box { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 6px; border: 2px solid #e2e8f0; margin: 2px; }
+        .row { display: flex; align-items: center; margin: 10px 0; position: relative;}
+        .split { width: 4px; height: 55px; background: var(--accent); margin: 0 10px; box-shadow: 0 0 8px var(--accent); z-index: 10; }
+
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; background: var(--accent); color: white; transition: 0.2s; }
+        button:hover { filter: brightness(1.1); }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .highlight-math { background: #ede9fe; color: var(--accent); padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h2>Problem Statement</h2>
+    <div class="ps-box">
+        Given two sorted arrays <code>nums1</code> and <code>nums2</code>, return the <b>median</b>.
+        Complexity: <b>O(log (min(M,N)))</b>.
+    </div>
+    <div class="code-block">
+      
+      
+        if l1 <= r2 and l2 <= r1: # Even Total Case: return (max(l1, l2) + min(r1, r2)) / 2 # Odd Total Case: return max(l1, l2)
+      
+    </div>
+
+    <h2>Python Implementation</h2>
+    <div class="code-block">
+<div><span class="keyword">while</span> low <= high:</div>
+<div class="indent-1">cut1 = (low + high) // <span class="num">2</span></div>
+<div class="indent-1">cut2 = (n1 + n2 + <span class="num">1</span>) // <span class="num">2</span> - cut1</div>
+<br>
+<div class="indent-1"><span class="comment"># Boundary checks</span></div>
+<div class="indent-1">l1 = nums1[cut1-<span class="num">1</span>] <span class="keyword">if</span> cut1 > <span class="num">0</span> <span class="keyword">else</span> -inf</div>
+<div class="indent-1">r1 = nums1[cut1] <span class="keyword">if</span> cut1 < n1 <span class="keyword">else</span> inf</div>
+<br>
+<div class="indent-1"><span class="keyword">if</span> l1 <= r2 <span class="keyword">and</span> l2 <= r1:</div>
+<div class="indent-2"><span class="keyword">if</span> (n1 + n2) % <span class="num">2</span> == <span class="num">0</span>:</div>
+<div class="indent-3"><span class="keyword">return</span> (<span class="func">max</span>(l1, l2) + <span class="func">min</span>(r1, r2)) / <span class="num">2.0</span></div>
+<div class="indent-2"><span class="keyword">else</span>:</div>
+<div class="indent-3"><span class="keyword">return</span> <span class="func">max</span>(l1, l2)</div>
+<br>
+<div class="indent-1"><span class="keyword">elif</span> l1 > r2:</div>
+<div class="indent-2">high = cut1 - <span class="num">1</span></div>
+<div class="indent-1"><span class="keyword">else</span>:</div>
+<div class="indent-2">low = cut1 + <span class="num">1</span></div>
+    </div>
+</div>
+
+<div class="right-panel">
+    <div id="status" class="status-msg">Ready to start. Click <b>Run Step</b> to find the partition.</div>
+
+    <div class="array-container">
+        <div class="row" id="row1"></div>
+        <div class="row" id="row2"></div>
+    </div>
+
+    <table class="partition-table">
+        <tr>
+            <td>Array 1</td>
+            <td id="disp-l1" class="l-val">-∞</td>
+            <td style="color:#94a3b8">✖</td>
+            <td id="disp-r1" class="l-val">+∞</td>
+        </tr>
+        <tr>
+            <td>Array 2</td>
+            <td id="disp-l2" class="r-val">-∞</td>
+            <td style="color:#94a3b8">✖</td>
+            <td id="disp-r2" class="r-val">+∞</td>
+        </tr>
+    </table>
+
+    <div id="calc-logic" style="margin-bottom: 20px; min-height: 50px; text-align: center;"></div>
+
+    <button onclick="nextStep()" id="next-btn">Run Partition Step</button>
+</div>
+
+<script>
+    const A = [1, 3, 8, 9, 15];
+    const B = [7, 11, 18, 19, 21, 25];
+    let low = 0, high = A.length;
+    let finished = false;
+
+    function render(cut1, cut2) {
+        const r1 = document.getElementById('row1');
+        const r2 = document.getElementById('row2');
+        r1.innerHTML = ''; r2.innerHTML = '';
+
+        A.forEach((n, i) => {
+            if(i === cut1) r1.innerHTML += '<div class="split"></div>';
+            r1.innerHTML += `<div class="box" style="background:${i < cut1 ? 'var(--array1)' : 'white'}; color:${i < cut1 ? 'white' : 'black'}">${n}</div>`;
+        });
+        if(cut1 === A.length) r1.innerHTML += '<div class="split"></div>';
+
+        B.forEach((n, i) => {
+            if(i === cut2) r2.innerHTML += '<div class="split"></div>';
+            r2.innerHTML += `<div class="box" style="background:${i < cut2 ? 'var(--array2)' : 'white'}; color:${i < cut2 ? 'white' : 'black'}">${n}</div>`;
+        });
+        if(cut2 === B.length) r2.innerHTML += '<div class="split"></div>';
+    }
+
+    function nextStep() {
+        if(finished) return;
+
+        let cut1 = Math.floor((low + high) / 2);
+        let cut2 = Math.floor((A.length + B.length + 1) / 2) - cut1;
+
+        let l1 = cut1 === 0 ? -Infinity : A[cut1-1];
+        let r1 = cut1 === A.length ? Infinity : A[cut1];
+        let l2 = cut2 === 0 ? -Infinity : B[cut2-1];
+        let r2 = cut2 === B.length ? Infinity : B[cut2];
+
+        render(cut1, cut2);
+        
+        document.getElementById('disp-l1').innerText = l1 === -Infinity ? "-∞" : l1;
+        document.getElementById('disp-r1').innerText = r1 === Infinity ? "+∞" : r1;
+        document.getElementById('disp-l2').innerText = l2 === -Infinity ? "-∞" : l2;
+        document.getElementById('disp-r2').innerText = r2 === Infinity ? "+∞" : r2;
+
+        if (l1 <= r2 && l2 <= r1) {
+            finished = true;
+            let isEven = (A.length + B.length) % 2 === 0;
+            let median = isEven ? (Math.max(l1, l2) + Math.min(r1, r2)) / 2 : Math.max(l1, l2);
+            
+            document.getElementById('status').innerHTML = `<b style="color:var(--accent)">Correct Partition! L1 ≤ R2 and L2 ≤ R1.</b>`;
+            document.getElementById('calc-logic').innerHTML = isEven ? 
+                `<span class="highlight-math">Even Total: (max(${l1}, ${l2}) + min(${r1}, ${r2})) / 2 = ${median}</span>` : 
+                `<span class="highlight-math">Odd Total: max(${l1}, ${l2}) = ${median}</span>`;
+            document.getElementById('next-btn').disabled = true;
+        } else if (l1 > r2) {
+            document.getElementById('status').innerText = "L1 > R2: Array 1 left side too large. Moving high left.";
+            high = cut1 - 1;
+        } else {
+            document.getElementById('status').innerText = "L2 > R1: Array 2 left side too large. Moving low right.";
+            low = cut1 + 1;
+        }
+    }
+    render(0, 0);
+</script>
+</body>
+</html>
