@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kth Missing Positive Visualizer</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --panel: #ffffff;
+            --primary: #6366f1;
+            --accent: #f43f5e;
+            --code-bg: #1e1e1e;
+            --missing-color: #fbbf24;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); }
+
+        .left-panel { flex: 1.1; padding: 25px; border-right: 1px solid #e2e8f0; background: var(--panel); overflow-y: auto; }
+        .right-panel { flex: 1.4; padding: 25px; display: flex; flex-direction: column; align-items: center; background: #f1f5f9; overflow-y: auto; }
+
+        .section { background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary); }
+        
+        .code-block { background: var(--code-bg); color: #d4d4d4; padding: 15px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 13px; line-height: 1.6; }
+        .keyword { color: #569cd6; }
+        .func { color: #dcdcaa; }
+        .active-line { background: #333; border-left: 3px solid var(--primary); color: #fff; }
+
+        /* Array Visualization */
+        .array-container { display: flex; gap: 10px; margin: 30px 0; }
+        .cell-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .cell { width: 50px; height: 50px; background: white; border: 2px solid var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; transition: 0.3s; }
+        .cell-idx { font-size: 0.75rem; color: #64748b; }
+        .missing-tag { font-size: 0.8rem; background: var(--missing-color); padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+
+        .highlight-mid { background: var(--primary) !important; color: white; transform: scale(1.1); }
+        .range-off { opacity: 0.3; filter: grayscale(1); }
+
+        .pill-box { display: flex; gap: 12px; margin-bottom: 20px; }
+        .pill { padding: 8px 16px; border-radius: 8px; background: var(--primary); color: white; font-weight: bold; }
+
+        .status-card { width: 90%; background: white; padding: 20px; border-radius: 12px; border-top: 4px solid var(--primary); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        button { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: var(--primary); color: white; transition: 0.2s; }
+        button:disabled { background: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h1>Kth Missing Number</h1>
+    <div class="section">
+        <p><b>PS:</b> Given sorted array <code>arr</code> and integer <code>k</code>, find the <code>kth</code> missing positive number.</p>
+        <p><b>Logic:</b> At index <code>i</code>, the number of missing elements is <code>arr[i] - (i + 1)</code>.</p>
+    </div>
+
+    <div class="code-block">
+        <div id="l1"><span class="keyword">def</span> <span class="func">findKthPositive</span>(arr, k):</div>
+        <div id="l2">&nbsp;&nbsp;low, high = 0, <span class="func">len</span>(arr) - 1</div>
+        <div id="l3">&nbsp;&nbsp;<span class="keyword">while</span> low <= high:</div>
+        <div id="l4">&nbsp;&nbsp;&nbsp;&nbsp;mid = (low + high) // 2</div>
+        <div id="l5">&nbsp;&nbsp;&nbsp;&nbsp;missing = arr[mid] - (mid + 1)</div>
+        <div id="l6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> missing < k:</div>
+        <div id="l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low = mid + 1</div>
+        <div id="l8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:</div>
+        <div id="l9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high = mid - 1</div>
+        <div id="l10">&nbsp;&nbsp;<span class="keyword">return</span> low + k</div>
+    </div>
+</div>
+
+<div class="right-panel">
+    <div class="pill-box">
+        <div class="pill">Target k: <span id="k-val">5</span></div>
+        <div class="pill" style="background:var(--missing-color); color:black;">Mid Missing: <span id="miss-val">0</span></div>
+    </div>
+
+    <div class="status-card" id="status">
+        Array: [2, 3, 4, 7, 11]. We are looking for the 5th missing number.
+    </div>
+
+    <div class="array-container" id="array-ui"></div>
+
+    <div style="margin-top: 30px; display: flex; gap: 10px;">
+        <button onclick="reset()">Reset</button>
+        <button id="next-btn" onclick="nextStep()">Next Step</button>
+    </div>
+</div>
+
+<script>
+    const arr = [2, 3, 4, 7, 11];
+    const K = 5;
+    let low = 0, high = arr.length - 1;
+    let finished = false;
+
+    function init() {
+        const ui = document.getElementById('array-ui');
+        ui.innerHTML = '';
+        arr.forEach((val, i) => {
+            ui.innerHTML += `
+                <div class="cell-wrapper" id="w-${i}">
+                    <div class="missing-tag">M: ${val - (i+1)}</div>
+                    <div class="cell" id="c-${i}">${val}</div>
+                    <div class="cell-idx">idx ${i}</div>
+                </div>`;
+        });
+        document.getElementById('k-val').innerText = K;
+    }
+
+    function setLine(lines) {
+        for(let i=1; i<=10; i++) document.getElementById(`l${i}`).className = '';
+        lines.forEach(l => document.getElementById(`l${l}`).className = 'active-line');
+    }
+
+    function nextStep() {
+        if (finished || low > high) {
+            let ans = low + K;
+            document.getElementById('status').innerHTML = `<b style="color:var(--primary)">Binary Search complete! Result: low (${low}) + k (${K}) = ${ans}</b>`;
+            finished = true;
+            document.getElementById('next-btn').disabled = true;
+            setLine([10]);
+            return;
+        }
+
+        let mid = Math.floor((low + high) / 2);
+        let missing = arr[mid] - (mid + 1);
+        document.getElementById('miss-val').innerText = missing;
+
+        // Visual update
+        arr.forEach((_, i) => {
+            const wrapper = document.getElementById(`w-${i}`);
+            const cell = document.getElementById(`c-${i}`);
+            wrapper.className = 'cell-wrapper' + (i < low || i > high ? ' range-off' : '');
+            cell.className = 'cell' + (i === mid ? ' highlight-mid' : '');
+        });
+
+        if (missing < K) {
+            document.getElementById('status').innerText = `At index ${mid}, missing count (${missing}) < ${K}. Go Right!`;
+            setHighlightRight(mid);
+            low = mid + 1;
+            setLine([6, 7]);
+        } else {
+            document.getElementById('status').innerText = `At index ${mid}, missing count (${missing}) >= ${K}. Go Left!`;
+            high = mid - 1;
+            setLine([8, 9]);
+        }
+    }
+
+    function setHighlightRight(mid) {}
+
+    function reset() {
+        low = 0; high = arr.length - 1; finished = false;
+        document.getElementById('next-btn').disabled = false;
+        document.getElementById('status').innerText = "Ready to search.";
+        init();
+        setLine([2, 3]);
+    }
+
+    init();
+    setLine([1, 2]);
+</script>
+</body>
+</html>

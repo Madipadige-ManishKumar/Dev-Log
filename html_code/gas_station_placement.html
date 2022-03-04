@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimize Max Distance to Gas Station</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --primary: #1e293b;
+            --accent: #f43f5e;
+            --station: #3b82f6;
+            --new-station: #10b981;
+            --code-bg: #0f172a;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); color: var(--primary); }
+
+        .left-panel { flex: 1.2; padding: 25px; background: white; border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; overflow-y: auto; }
+
+        .ps-box { background: #fff1f2; padding: 15px; border-radius: 10px; border-left: 5px solid var(--accent); margin-bottom: 20px; }
+        .logic-card { background: #f8fafc; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; line-height: 1.5; }
+
+        .code-block { background: var(--code-bg); padding: 18px; border-radius: 12px; color: #cbd5e1; font-family: 'Fira Code', monospace; font-size: 12px; line-height: 1.5; }
+        .keyword { color: #ff7b72; }
+        .func { color: #d2a8ff; }
+        .line { padding: 0 10px; border-left: 3px solid transparent; transition: 0.3s; }
+        .active-line { background: #1e293b; border-left-color: var(--accent); color: #fff; }
+
+        /* Road Visualization */
+        .road { width: 90%; height: 6px; background: #cbd5e1; position: relative; margin: 60px 0; border-radius: 3px; }
+        .station { position: absolute; width: 12px; height: 12px; background: var(--station); border-radius: 50%; transform: translate(-50%, -50%); top: 50%; }
+        .new-station { position: absolute; width: 10px; height: 10px; background: var(--new-station); border-radius: 50%; transform: translate(-50%, -50%); top: 50%; animation: pop 0.3s ease-out; }
+        .station-label { position: absolute; top: 15px; font-size: 10px; font-weight: bold; transform: translateX(-50%); }
+
+        @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1); } }
+
+        .stat-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .pill { padding: 8px 16px; border-radius: 20px; font-weight: 700; color: white; background: var(--primary); font-size: 12px; }
+
+        .status-msg { width: 90%; background: white; padding: 15px; border-radius: 8px; margin: 15px 0; border-top: 4px solid var(--accent); font-size: 0.9rem; }
+
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; background: var(--accent); color: white; }
+        .btn-reset { background: #64748b; margin-right: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h1>Gas Station Placement</h1>
+    
+    <div class="ps-box">
+        <b>Task:</b> Minimize the maximum distance between adjacent gas stations by adding <code>K</code> new stations.
+    </div>
+
+    <div class="logic-card">
+        <b>The Math:</b> If a gap between two stations is <code>dist</code>, and we want to ensure no sub-gap exceeds <code>mid</code>, we need <code>floor(dist / mid)</code> new stations.
+    </div>
+
+    <div class="code-block">
+        <div class="line" id="l1"><span class="keyword">def</span> <span class="func">minMaxDistance</span>(stations, k):</div>
+        <div class="line" id="l2">&nbsp;&nbsp;low, high = 0, stations[-1] - stations[0]</div>
+        <div class="line" id="l3">&nbsp;&nbsp;<span class="keyword">for</span> _ <span class="keyword">in</span> <span class="func">range</span>(100): <span class="func"># Precision loop</span></div>
+        <div class="line" id="l4">&nbsp;&nbsp;&nbsp;&nbsp;mid = (low + high) / 2</div>
+        <div class="line" id="l5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> <span class="func">canPlace</span>(mid, stations, k):</div>
+        <div class="line" id="l6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high = mid</div>
+        <div class="line" id="l7">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:</div>
+        <div class="line" id="l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low = mid</div>
+        <div class="line" id="l9">&nbsp;&nbsp;<span class="keyword">return</span> high</div>
+    </div>
+</div>
+
+<div class="right-panel">
+    <div class="stat-row">
+        <div class="pill">K (Budget): 4</div>
+        <div class="pill" style="background:var(--accent)">Test Gap: <span id="val-mid">?</span></div>
+        <div class="pill" style="background:var(--new-station)">Needed: <span id="val-needed">0</span></div>
+    </div>
+
+    <div class="status-msg" id="status">
+        We are looking for the smallest gap size that fits within K = 4.
+    </div>
+
+    <div class="road" id="road"></div>
+
+    <div style="margin-top:40px;">
+        <button class="btn-reset" onclick="reset()">Reset</button>
+        <button onclick="nextStep()" id="next-btn">Next Step</button>
+    </div>
+</div>
+
+<script>
+    const stations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Example: [1, 10] with intermediate
+    const K = 4;
+    const actualStations = [1, 10]; // Simplified for visual
+    let low = 0, high = 9, ans = 9;
+    let iteration = 0;
+
+    function init() {
+        const road = document.getElementById('road');
+        road.innerHTML = '';
+        actualStations.forEach(s => {
+            const pos = ((s - 1) / 9) * 100;
+            road.innerHTML += `<div class="station" style="left: ${pos}%"></div>`;
+            road.innerHTML += `<div class="station-label" style="left: ${pos}%">${s}</div>`;
+        });
+    }
+
+    function nextStep() {
+        if (iteration >= 20) {
+            document.getElementById('status').innerHTML = `<b style="color:var(--new-station)">Optimal Max Distance: ${high.toFixed(4)}</b>`;
+            document.getElementById('next-btn').disabled = true;
+            return;
+        }
+
+        let mid = (low + high) / 2;
+        document.getElementById('val-mid').innerText = mid.toFixed(3);
+
+        // Greedy Visual
+        let needed = 0;
+        const road = document.getElementById('road');
+        init(); // Clear new ones
+        
+        for (let i = 0; i < actualStations.length - 1; i++) {
+            let gap = actualStations[i+1] - actualStations[i];
+            let count = Math.floor(gap / mid);
+            if (gap % mid === 0) count--; // Exactly on mid doesn't need extra
+            needed += count;
+
+            // Visual markers
+            for(let j = 1; j <= count; j++) {
+                if (needed > 20) break; // Don't crash UI
+                let newPos = actualStations[i] + (j * (gap / (count + 1)));
+                let percent = ((newPos - 1) / 9) * 100;
+                road.innerHTML += `<div class="new-station" style="left: ${percent}%"></div>`;
+            }
+        }
+
+        document.getElementById('val-needed').innerText = needed;
+
+        if (needed <= K) {
+            document.getElementById('status').innerHTML = `Limit <b>${mid.toFixed(3)}</b> needs <b>${needed}</b> stations. <br>Works! Trying smaller.`;
+            high = mid;
+        } else {
+            document.getElementById('status').innerHTML = `Limit <b>${mid.toFixed(3)}</b> needs <b>${needed}</b> stations. <br>Too many! Increasing limit.`;
+            low = mid;
+        }
+        iteration++;
+    }
+
+    function reset() {
+        low = 0; high = 9; iteration = 0;
+        document.getElementById('next-btn').disabled = false;
+        init();
+    }
+
+    init();
+</script>
+</body>
+</html>

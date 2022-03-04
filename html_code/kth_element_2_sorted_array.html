@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>K-th Element of Two Sorted Arrays - Complete Guide</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --primary: #0f172a;
+            --accent: #f59e0b;
+            --array1: #3b82f6;
+            --array2: #ec4899;
+            --code-bg: #0d1117;
+            --kw: #ff7b72;
+            --fn: #d2a8ff;
+            --cm: #8b949e;
+            --st: #a5d6ff;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); }
+
+        /* Left Panel */
+        .left-panel { flex: 1.2; padding: 25px; background: white; border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .section-title { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin: 20px 0 10px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; }
+        .ps-box { background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 0.95rem; line-height: 1.5; border-left: 4px solid var(--primary); }
+        .logic-list { font-size: 0.9rem; color: #334155; padding-left: 20px; }
+        .logic-list li { margin-bottom: 8px; }
+
+        /* Formatted Code Block */
+        pre {
+            background: var(--code-bg);
+            color: #c9d1d9;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        .k { color: var(--kw); } .f { color: var(--fn); } .c { color: var(--cm); } .s { color: var(--st); }
+
+        /* Right Panel */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; overflow-y: auto; }
+        .status-card { width: 90%; background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--accent); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .array-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 95%; }
+        .row { display: flex; align-items: center; margin: 10px 0; }
+        .box { width: 42px; height: 42px; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 6px; margin: 2px; }
+        .split { width: 4px; height: 50px; background: var(--accent); margin: 0 8px; box-shadow: 0 0 10px var(--accent); }
+
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; background: var(--primary); color: white; transition: 0.2s; }
+        button:hover { background: #334155; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <div class="section-title">Problem Statement</div>
+    <div class="ps-box">
+        Given two sorted arrays <code>arr1</code> and <code>arr2</code> of sizes <code>N</code> and <code>M</code>, find the <b>K-th smallest element</b> in the union of the two arrays. 
+        <br><br>
+        <b>Constraint:</b> Time complexity must be <code>O(log(min(N, M)))</code>.
+    </div>
+
+    <div class="section-title">The Logic</div>
+    <ul class="logic-list">
+        <li><b>Partitioning:</b> We split both arrays so that the total elements on the left side equals <code>K</code>.</li>
+        <li><b>The Boundary:</b> If we pick <code>cut1</code> elements from Array 1, we must pick <code>K - cut1</code> from Array 2.</li>
+        <li><b>Validation:</b> We check if the largest on the left (<code>L1, L2</code>) is smaller than the smallest on the right (<code>R1, R2</code>).</li>
+        <li><b>Result:</b> When valid, the K-th element is <code>max(L1, L2)</code>.</li>
+    </ul>
+
+    <div class="section-title">Python Implementation</div>
+<pre>
+<span class="k">def</span> <span class="f">kthElement</span>(arr1, arr2, k):
+    n, m = <span class="f">len</span>(arr1), <span class="f">len</span>(arr2)
+    <span class="k">if</span> n > m: <span class="k">return</span> <span class="f">kthElement</span>(arr2, arr1, k)
+    
+    <span class="c"># Edge Case: Search range depends on K</span>
+    low = <span class="f">max</span>(0, k - m)
+    high = <span class="f">min</span>(k, n)
+    
+    <span class="k">while</span> low <= high:
+        cut1 = (low + high) // 2
+        cut2 = k - cut1
+        
+        l1 = arr1[cut1-1] <span class="k">if</span> cut1 > 0 <span class="k">else</span> <span class="f">float</span>(<span class="s">'-inf'</span>)
+        r1 = arr1[cut1] <span class="k">if</span> cut1 < n <span class="k">else</span> <span class="f">float</span>(<span class="s">'inf'</span>)
+        l2 = arr2[cut2-1] <span class="k">if</span> cut2 > 0 <span class="k">else</span> <span class="f">float</span>(<span class="s">'-inf'</span>)
+        r2 = arr2[cut2] <span class="k">if</span> cut2 < m <span class="k">else</span> <span class="f">float</span>(<span class="s">'inf'</span>)
+        
+        <span class="k">if</span> l1 <= r2 <span class="k">and</span> l2 <= r1:
+            <span class="k">return</span> <span class="f">max</span>(l1, l2)
+        <span class="k">elif</span> l1 > r2:
+            high = cut1 - 1
+        <span class="k">else</span>:
+            low = cut1 + 1
+</pre>
+</div>
+
+<div class="right-panel">
+    <h1>Visual Debugger</h1>
+    <div id="status" class="status-card">Target: Find <b>K = 5th</b> smallest element.</div>
+
+    <div class="array-container">
+        <div class="row" id="row1"></div>
+        <div class="row" id="row2"></div>
+    </div>
+
+    <div style="margin-top: 30px; display: flex; gap: 10px;">
+        <button onclick="nextStep()" id="btn">Next Step</button>
+        <button onclick="location.reload()" style="background:#64748b">Reset</button>
+    </div>
+</div>
+
+<script>
+    const A = [2, 3, 6, 7, 9];
+    const B = [1, 4, 8, 10];
+    const K = 5;
+    let low = Math.max(0, K - B.length), high = Math.min(K, A.length);
+    let finished = false;
+
+    function render(c1, c2) {
+        const r1 = document.getElementById('row1'), r2 = document.getElementById('row2');
+        r1.innerHTML = ''; r2.innerHTML = '';
+        A.forEach((n, i) => {
+            if(i === c1) r1.innerHTML += '<div class="split"></div>';
+            r1.innerHTML += `<div class="box" style="background:${i < c1 ? 'var(--array1)' : 'white'}; color:${i < c1 ? 'white' : 'black'}">${n}</div>`;
+        });
+        if(c1 === A.length) r1.innerHTML += '<div class="split"></div>';
+
+        B.forEach((n, i) => {
+            if(i === c2) r2.innerHTML += '<div class="split"></div>';
+            r2.innerHTML += `<div class="box" style="background:${i < c2 ? 'var(--array2)' : 'white'}; color:${i < c2 ? 'white' : 'black'}">${n}</div>`;
+        });
+        if(c2 === B.length) r2.innerHTML += '<div class="split"></div>';
+    }
+
+    function nextStep() {
+        if(finished) return;
+        let cut1 = Math.floor((low + high) / 2);
+        let cut2 = K - cut1;
+
+        let l1 = cut1 === 0 ? -Infinity : A[cut1-1];
+        let r1 = cut1 === A.length ? Infinity : A[cut1];
+        let l2 = cut2 === 0 ? -Infinity : B[cut2-1];
+        let r2 = cut2 === B.length ? Infinity : B[cut2];
+
+        render(cut1, cut2);
+
+        if(l1 <= r2 && l2 <= r1) {
+            finished = true;
+            document.getElementById('status').innerHTML = `<b>Success!</b> The 5th element is <b>max(${l1}, ${l2}) = ${Math.max(l1, l2)}</b>.`;
+            document.getElementById('btn').disabled = true;
+        } else if (l1 > r2) {
+            document.getElementById('status').innerHTML = `<b>L1 (${l1}) > R2 (${r2})</b>: Array 1 left side too large. High moves left.`;
+            high = cut1 - 1;
+        } else {
+            document.getElementById('status').innerHTML = `<b>L2 (${l2}) > R1 (${r1})</b>: Array 2 left side too large. Low moves right.`;
+            low = cut1 + 1;
+        }
+    }
+    render(-1, -1);
+</script>
+</body>
+</html>
