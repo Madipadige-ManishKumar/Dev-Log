@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2D Matrix Search II - Staircase Visualizer</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --primary: #0f172a;
+            --accent: #ef4444;
+            --found: #10b981;
+            --code-bg: #0d1117;
+            --kw: #ff7b72;
+            --fn: #d2a8ff;
+            --cm: #8b949e;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); }
+
+        /* Left Panel: Logic and Problem */
+        .left-panel { flex: 1.2; padding: 25px; background: white; border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin: 20px 0 10px; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; }
+        .ps-box { background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 0.9rem; line-height: 1.5; }
+        
+        pre {
+            background: var(--code-bg);
+            color: #c9d1d9;
+            padding: 18px;
+            border-radius: 10px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+            border: 1px solid #30363d;
+        }
+        .k { color: var(--kw); } .f { color: var(--fn); } .c { color: var(--cm); }
+
+        /* Right Panel: Visualization */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f1f5f9; }
+        .status-card { width: 90%; background: white; padding: 15px; border-radius: 8px; border-top: 4px solid var(--accent); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .matrix-grid { display: grid; grid-template-columns: repeat(5, 55px); gap: 10px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .cell { width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 8px; border: 2px solid #e2e8f0; background: #fff; transition: 0.3s; font-size: 14px; }
+        .active { border-color: var(--accent); background: #fef2f2; transform: scale(1.1); box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); z-index: 10; }
+        .success { border-color: var(--found); background: #ecfdf5; color: var(--found); transform: scale(1.15); }
+
+        .controls { display: flex; gap: 10px; margin-top: 25px; }
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; background: var(--primary); color: white; transition: 0.2s; }
+        button:hover { background: #334155; }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <div class="section-title">Problem Statement</div>
+    <div class="ps-box">
+        Given an <code>M x N</code> matrix where integers in each row and column are sorted in <b>ascending order</b>, search for a target value.
+    </div>
+
+    <div class="section-title">Optimal Strategy (O(M + N))</div>
+    <div class="ps-box">
+        We use the <b>Staircase Search</b>. By starting at the <b>Top-Right</b>:
+        <ul style="margin: 8px 0; padding-left: 20px;">
+            <li>If current value > Target: All elements below it are even larger. Move <b>Left</b>.</li>
+            <li>If current value < Target: All elements to its left are even smaller. Move <b>Down</b>.</li>
+        </ul>
+    </div>
+
+    <div class="section-title">Python Implementation</div>
+<pre>
+<span class="k">def</span> <span class="f">searchMatrix</span>(matrix, target):
+    <span class="c"># Start at Top-Right corner</span>
+    row, col = 0, <span class="f">len</span>(matrix[0]) - 1
+    
+    <span class="k">while</span> row < <span class="f">len</span>(matrix) <span class="k">and</span> col >= 0:
+        <span class="k">if</span> matrix[row][col] == target:
+            <span class="k">return</span> <span class="k">True</span>
+        <span class="k">elif</span> matrix[row][col] > target:
+            col -= 1  <span class="c"># Move Left</span>
+        <span class="k">else</span>:
+            row += 1  <span class="c"># Move Down</span>
+            
+    <span class="k">return</span> <span class="k">False</span>
+</pre>
+</div>
+
+<div class="right-panel">
+    <h1>Staircase Search</h1>
+    <div id="status" class="status-card">Target: <b>14</b>. Start at Top-Right [0, 4].</div>
+
+    <div id="grid" class="matrix-grid"></div>
+
+    <div class="controls">
+        <button id="stepBtn" onclick="step()">Next Step</button>
+        <button onclick="location.reload()" style="background:#64748b">Reset</button>
+    </div>
+</div>
+
+<script>
+    const matrix = [
+        [1,   4,  7, 11, 15],
+        [2,   5,  8, 12, 19],
+        [3,   6,  9, 16, 22],
+        [10, 13, 14, 17, 24],
+        [18, 21, 23, 26, 30]
+    ];
+    const target = 14;
+    let r = 0, c = 4;
+    let finished = false;
+
+    function init() {
+        const grid = document.getElementById('grid');
+        for(let i=0; i<5; i++) {
+            for(let j=0; j<5; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.id = `cell-${i}-${j}`;
+                cell.innerText = matrix[i][j];
+                grid.appendChild(cell);
+            }
+        }
+        updateActive();
+    }
+
+    function updateActive() {
+        document.querySelectorAll('.cell').forEach(el => el.classList.remove('active'));
+        if(!finished && r < 5 && c >= 0) {
+            document.getElementById(`cell-${r}-${c}`).classList.add('active');
+        }
+    }
+
+    function step() {
+        if(finished || r >= 5 || c < 0) return;
+
+        let val = matrix[r][c];
+        let statusText = `Checking [${r}, ${c}]: <b>${val}</b>. `;
+
+        if(val === target) {
+            statusText += `<span style="color:var(--found); font-weight:bold;">Found Target!</span>`;
+            document.getElementById(`cell-${r}-${c}`).classList.add('success');
+            finished = true;
+            document.getElementById('stepBtn').disabled = true;
+        } else if (val > target) {
+            statusText += `${val} > ${target}, moving <b>Left</b>.`;
+            c--;
+        } else {
+            statusText += `${val} < ${target}, moving <b>Down</b>.`;
+            r++;
+        }
+
+        document.getElementById('status').innerHTML = statusText;
+        if(!finished && (r >= 5 || c < 0)) {
+            document.getElementById('status').innerHTML = "<b>Target not found</b> in matrix.";
+            document.getElementById('stepBtn').disabled = true;
+        }
+        updateActive();
+    }
+
+    init();
+</script>
+</body>
+</html>
