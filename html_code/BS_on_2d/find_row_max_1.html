@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Row with Max 1s - Optimal Visualizer</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --primary: #0f172a;
+            --accent: #10b981;
+            --cell-0: #f1f5f9;
+            --cell-1: #dcfce7;
+            --code-bg: #0d1117;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); }
+
+        .left-panel { flex: 1; padding: 25px; background: white; border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f8fafc; }
+
+        .section-title { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin: 20px 0 10px; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; }
+        
+        pre {
+            background: var(--code-bg);
+            color: #c9d1d9;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        .k { color: #ff7b72; } .f { color: #d2a8ff; } .c { color: #8b949e; }
+
+        .matrix-container { display: grid; grid-template-columns: repeat(5, 50px); gap: 8px; margin-top: 20px; }
+        .cell { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 6px; border: 2px solid #e2e8f0; transition: 0.3s; position: relative; }
+        .active { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); transform: scale(1.1); z-index: 10; }
+        .val-0 { background: var(--cell-0); color: #64748b; }
+        .val-1 { background: var(--cell-1); color: #166534; }
+
+        .status-card { width: 90%; background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #3b82f6; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; background: var(--primary); color: white; margin-top: 20px; }
+        button:disabled { background: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <div class="section-title">Problem Statement</div>
+    <p style="font-size: 0.95rem; color: #334155;">
+        Given a boolean 2D array where each row is <b>sorted</b>, find the 0-based index of the first row that has the maximum number of 1s.
+    </p>
+
+    <div class="section-title">Optimal Logic: O(N + M)</div>
+    <pre>
+<span class="k">def</span> <span class="f">rowWithMax1s</span>(mat):
+    n, m = <span class="f">len</span>(mat), <span class="f">len</span>(mat[0])
+    max_row = -1
+    j = m - 1 <span class="c"># Start top-right</span>
+    
+    <span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(n):
+        <span class="k">while</span> j >= 0 <span class="k">and</span> mat[i][j] == 1:
+            j -= 1 <span class="c"># Move left</span>
+            max_row = i
+            
+    <span class="k">return</span> max_row
+    </pre>
+</div>
+
+<div class="right-panel">
+    <div id="status" class="status-card">Start at Top-Right corner. Move <b>Left</b> on 1, Move <b>Down</b> on 0.</div>
+
+    <div id="matrix" class="matrix-container"></div>
+
+    <div style="margin-top: 20px;">
+        <button id="nextBtn" onclick="step()">Next Step</button>
+        <button onclick="location.reload()" style="background:#64748b">Reset</button>
+    </div>
+</div>
+
+<script>
+    const matrix = [
+        [0, 1, 1, 1, 1],
+        [0, 0, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 1],
+        [0, 0, 0, 1, 1]
+    ];
+    
+    let r = 0, c = matrix[0].length - 1;
+    let maxRow = -1;
+    let finished = false;
+
+    const grid = document.getElementById('matrix');
+    function init() {
+        grid.innerHTML = '';
+        for(let i=0; i<matrix.length; i++) {
+            for(let j=0; j<matrix[0].length; j++) {
+                const cell = document.createElement('div');
+                cell.className = `cell val-${matrix[i][j]}`;
+                cell.id = `c-${i}-${j}`;
+                cell.innerText = matrix[i][j];
+                grid.appendChild(cell);
+            }
+        }
+        updateActive();
+    }
+
+    function updateActive() {
+        document.querySelectorAll('.cell').forEach(el => el.classList.remove('active'));
+        if(r < matrix.length && c >= 0) {
+            document.getElementById(`c-${r}-${c}`).classList.add('active');
+        }
+    }
+
+    function step() {
+        if(finished) return;
+
+        if(r >= matrix.length) {
+            document.getElementById('status').innerHTML = `<b>Finished!</b> Max 1s found in Row: <b>${maxRow}</b>`;
+            finished = true;
+            document.getElementById('nextBtn').disabled = true;
+            return;
+        }
+
+        if(c >= 0 && matrix[r][c] === 1) {
+            document.getElementById('status').innerHTML = `Found 1 at [${r}, ${c}]. Moving <b>Left</b>. Max row updated to: ${r}`;
+            maxRow = r;
+            c--;
+        } else {
+            document.getElementById('status').innerHTML = `Found 0 (or edge) at [${r}, ${c}]. Moving <b>Down</b> to next row.`;
+            r++;
+        }
+        updateActive();
+    }
+
+    init();
+</script>
+</body>
+</html>

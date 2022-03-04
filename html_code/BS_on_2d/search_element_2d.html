@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2D Matrix Binary Search Visualizer</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --low-color: #f59e0b;
+            --high-color: #ef4444;
+            --mid-color: #10b981;
+            --code-bg: #0d1117;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); }
+
+        /* Left Panel */
+        .left-panel { flex: 1.2; padding: 25px; background: white; border-right: 1px solid #e2e8f0; overflow-y: auto; }
+        .ps-box { background: #f1f5f9; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
+        
+        pre {
+            background: var(--code-bg);
+            color: #c9d1d9;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        .k { color: #ff7b72; } .f { color: #d2a8ff; } .c { color: #8b949e; } .n { color: #79c0ff; }
+
+        /* Right Panel */
+        .right-panel { flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center; background-color: #f8fafc; }
+        .status-card { width: 90%; background: white; padding: 15px; border-radius: 8px; border-left: 5px solid var(--accent); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .matrix-grid { display: grid; grid-template-columns: repeat(4, 60px); gap: 10px; margin-top: 20px; }
+        .cell { width: 60px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; border-radius: 8px; border: 2px solid #e2e8f0; background: white; transition: 0.3s; font-size: 14px; }
+        .idx-label { font-size: 10px; color: #94a3b8; margin-bottom: 2px; }
+
+        /* Highlights */
+        .is-low { border-color: var(--low-color); background: #fffbeb; box-shadow: 0 0 8px var(--low-color); }
+        .is-high { border-color: var(--high-color); background: #fef2f2; box-shadow: 0 0 8px var(--high-color); }
+        .is-mid { border-color: var(--mid-color); background: #ecfdf5; box-shadow: 0 0 15px var(--mid-color); transform: scale(1.1); z-index: 10; }
+
+        button { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; background: var(--primary); color: white; margin-top: 20px; transition: 0.2s; }
+        button:hover { background: #334155; }
+        button:disabled { background: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h2>Problem Statement</h2>
+    <div class="ps-box">
+        Write an efficient algorithm that searches for a <code>target</code> value in an <code>m x n</code> integer matrix. 
+        Rows are sorted left-to-right, and the first integer of each row is greater than the last integer of the previous row.
+    </div>
+
+    <h2>Python Implementation</h2>
+<pre>
+<span class="k">def</span> <span class="f">searchMatrix</span>(matrix, target):
+    m, n = <span class="f">len</span>(matrix), <span class="f">len</span>(matrix[<span class="n">0</span>])
+    low, high = <span class="n">0</span>, (m * n) - <span class="n">1</span>
+    
+    <span class="k">while</span> low <= high:
+        mid = (low + high) // <span class="n">2</span>
+        <span class="c"># Map 1D index to 2D row/col</span>
+        r, c = mid // n, mid % n
+        
+        <span class="k">if</span> matrix[r][c] == target:
+            <span class="k">return</span> <span class="k">True</span>
+        <span class="k">elif</span> matrix[r][c] < target:
+            low = mid + <span class="n">1</span>
+        <span class="k">else</span>:
+            high = mid - <span class="n">1</span>
+    <span class="k">return</span> <span class="k">False</span>
+</pre>
+</div>
+
+<div class="right-panel">
+    <div id="status" class="status-card">Target: <b>34</b>. Total Elements: 12. Range: [0, 11]</div>
+
+    <div id="grid" class="matrix-grid"></div>
+
+    <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button id="stepBtn" onclick="step()">Next Binary Step</button>
+        <button onclick="location.reload()" style="background:#64748b">Reset</button>
+    </div>
+</div>
+
+<script>
+    const matrix = [
+        [1, 3, 5, 7],
+        [10, 11, 16, 20],
+        [23, 30, 34, 60]
+    ];
+    const target = 34;
+    const M = 3, N = 4;
+    let low = 0, high = (M * N) - 1;
+    let finished = false;
+
+    function init() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+        for(let i=0; i<M; i++) {
+            for(let j=0; j<N; j++) {
+                const val = matrix[i][j];
+                const idx = i * N + j;
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.id = `idx-${idx}`;
+                cell.innerHTML = `<span class="idx-label">${idx}</span><span>${val}</span>`;
+                grid.appendChild(cell);
+            }
+        }
+        updateHighlights();
+    }
+
+    function updateHighlights() {
+        document.querySelectorAll('.cell').forEach(c => {
+            c.classList.remove('is-low', 'is-high', 'is-mid');
+        });
+        if (low <= high && !finished) {
+            document.getElementById(`idx-${low}`).classList.add('is-low');
+            document.getElementById(`idx-${high}`).classList.add('is-high');
+        }
+    }
+
+    function step() {
+        if (finished || low > high) return;
+
+        let mid = Math.floor((low + high) / 2);
+        let r = Math.floor(mid / N);
+        let c = mid % N;
+        let midVal = matrix[r][c];
+
+        updateHighlights();
+        document.getElementById(`idx-${mid}`).classList.add('is-mid');
+
+        let msg = `Mid Index: ${mid} (Row ${r}, Col ${c}). Value: <b>${midVal}</b>. `;
+
+        if (midVal === target) {
+            msg += `<br><span style="color:var(--mid-color)">Found target ${target}!</span>`;
+            finished = true;
+            document.getElementById('stepBtn').disabled = true;
+        } else if (midVal < target) {
+            msg += `Too small. Move <b>low</b> to ${mid + 1}.`;
+            low = mid + 1;
+        } else {
+            msg += `Too big. Move <b>high</b> to ${mid - 1}.`;
+            high = mid - 1;
+        }
+        document.getElementById('status').innerHTML = msg;
+    }
+
+    init();
+</script>
+</body>
+</html>
