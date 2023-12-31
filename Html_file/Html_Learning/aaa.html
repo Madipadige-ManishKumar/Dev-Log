@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Button</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .button::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        .loading {
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="loadingButton" class="button">Click Me</button>
+
+    <script>
+        const button = document.getElementById('loadingButton');
+
+        button.addEventListener('click', () => {
+            button.classList.add('loading');
+            setTimeout(() => {
+                // Simulate some async task
+                button.classList.remove('loading');
+            }, 3000); // Replace this with the actual task duration
+        });
+    </script>
+</body>
+</html>
