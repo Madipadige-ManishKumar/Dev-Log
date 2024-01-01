@@ -1,0 +1,108 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width= , initial-scale=1.0">
+    <link rel="stylesheet" type ="text/css"href="style.css">
+    <title>Audio visualizer</title>
+</head>
+<body>
+    <audio src="C:\\flaskfiles\\static\\play.mp3"></audio>
+    <div class="box">
+        <div class="visualizer"></div>
+    </div>
+    <div class="play">
+        <div class="btn btn-plY"></div>
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Beldavisss 👾">  
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet"> -->
+  <title>Open 24 hours</title>
+  
+ <!-- La etiqueta audio puede tunearse mucho, aqui un ejemplo de ello. By Beldaviss 👾-->
+    
+ 
+</head>
+<body>
+  <div class="audio-container">
+    <audio controls autoplay class="audio-controls" crossorigin="anonymous">
+      <source src="C:\\flaskfiles\\static\\play.mp3">
+    </audio>
+    <!-- <div class="audio-visualizer-container">
+      <div class="audio-visualizer">
+        <span class="neon-text">By Beldavisss</span>
+        <br>
+        <span class="emoji">👾</span>
+        <canvas id="visualizer-canvas"></canvas>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- <script> -->
+  
+  // Aqui la magia del codigo
+  
+//     const audioElement = document.querySelector(".audio-controls");
+//     const audioVisualizer = document.querySelector(".audio-visualizer");
+//     const visualizerCanvas = document.getElementById("visualizer-canvas");
+//     const visualizerContext = visualizerCanvas.getContext("2d");
+
+//     visualizerCanvas.width = audioVisualizer.clientWidth;
+//     visualizerCanvas.height = audioVisualizer.clientHeight;
+
+//     audioVisualizer.style.position = "relative";
+//     audioVisualizer.style.overflow = "hidden";
+
+//     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+//     const analyser = audioContext.createAnalyser();
+//     const source = audioContext.createMediaElementSource(audioElement);
+//     source.connect(analyser);
+//     analyser.connect(audioContext.destination);
+
+//     const bufferLength = analyser.frequencyBinCount;
+//     const dataArray = new Uint8Array(bufferLength);
+
+//     function drawVisualizer() {
+//       const width = visualizerCanvas.width;
+//       const height = visualizerCanvas.height;
+
+//       analyser.getByteFrequencyData(dataArray);
+//       visualizerContext.clearRect(0, 0, width, height);
+
+//       const barWidth = (width / bufferLength) * 2.5;
+//       let x = 0;
+
+//       for (let i = 0; i < bufferLength; i++) {
+//         const hue = ((i / bufferLength) * 255) + 255;
+//         const saturation = "100%";
+//         const lightness = (dataArray[i] / 255) * 50 + 25;
+//         visualizerContext.shadowColor = `hsl(${hue}, ${saturation}, ${lightness}%)`;
+//         visualizerContext.shadowBlur = 10;
+
+//         const barHeight = (dataArray[i] / 255) * height;
+//         visualizerContext.fillStyle = `hsl(${hue}, ${saturation}, ${lightness}%)`;
+//         visualizerContext.fillRect(x, height - barHeight, barWidth, barHeight);
+
+//         x += barWidth + 1;
+//       }
+
+//       requestAnimationFrame(drawVisualizer);
+//     }
+
+//     drawVisualizer();
+//     setTimeout(function() {
+//       document.querySelector(".neon-text").style.display = "inline";
+//     }, 5000);
+//   </script>
+</body>
+</html>
