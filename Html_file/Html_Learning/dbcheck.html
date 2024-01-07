@@ -1,0 +1,64 @@
+<!-- // Server-side code using Node.js and Express
+const express = require('express');
+const mysql = require('mysql');
+const app = express();
+
+// Create a MySQL connection
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'cme123',
+  database: 'db1',
+});
+
+// Connect to the database
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    return;
+  }
+  console.log('Connected to the database');
+});
+
+// API endpoint to check if data exists in the database
+app.get('/check-data/:data', (req, res) => {
+  const dataToCheck = req.params.data;
+  const sql = 'SELECT * FROM your_table WHERE your_column = ?';
+
+  db.query(sql, [dataToCheck], (err, results) => {
+    if (err) {
+      console.error('Database query error:', err);
+      res.status(500).json({ error: 'Database error' });
+      return;
+    }
+
+    if (results.length > 0) {
+      // Data exists in the database; return it as a JSON response
+      res.json({ exists: true, value: results[0].your_column });
+    } else {
+      // Data not found in the database
+      res.json({ exists: false });
+    }
+  });
+});
+
+// Start the server
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+}); -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        alert("Hello World");
+    </script>
+</body>
+</html>
