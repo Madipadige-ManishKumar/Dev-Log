@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Image Rotation</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      position: relative;
+    }
+
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #rotating-image {
+      width: 200px; /* Adjust as needed */
+      height: auto;
+      border-radius: 50%;
+      animation: rotateImage 0.1s infinite linear; /* Adjust rotation speed here */
+    }
+
+    @keyframes rotateImage {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    .conout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: circularMovement 5s linear infinite;
+    }
+    @keyframes circularMovement {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg) translateX(150px) rotate(0deg);
+        }
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg) translateX(150px) rotate(-360deg);
+        }
+    }
+
+    
+  </style>
+</head>
+<body bgcolor="black">
+    <div class="conout">
+  <div class="container">
+    <img id="rotating-image" src="images/moltres.jpeg" alt="Rotating Image">
+    
+  </div>
+</div>
+  <script>
+    // You can add JavaScript code here if needed
+  </script>
+</body>
+</html>
