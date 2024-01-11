@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice-to-Text</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+</head>
+<body>
+<h1>Voice-to-Text</h1>
+<button id="recordButton">Record</button>
+<button id="submitButton">Submit</button>
+<textarea id="transcription" rows="10" cols="50"></textarea>
+<script>
+        $(document).ready(function() {
+            var recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+
+            $('#recordButton').click(function() {
+                recognition.start();
+            });
+
+            $('#submitButton').click(function() {
+                var transcription = $('#transcription').val();
+                $.ajax({
+                    type: "POST",
+                    url: "/save",
+                    data: { transcription: transcription },
+                    success: function() {
+                        alert("Text saved!");
+                    }
+                });
+            });
+
+            recognition.onresult = function(event) {
+                var result = event.results[event.results.length - 1][0].transcript;
+                $('#transcription').val(result);
+            };
+        });
+    </script>
+</body>
+</html>
