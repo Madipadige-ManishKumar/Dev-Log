@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading Screen</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    font-family: Arial, sans-serif;
+  }
+
+  .loader {
+    position: relative; /* Added position relative */
+    border-top: 8px solid red;
+    border-radius: 100%;
+    width: 500px; /* Increased radius */
+    height: 500px; /* Increased radius */
+    animation: spin 2s linear infinite;
+  }
+
+  .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #rotating-image {
+    width: 100px; /* Adjust as needed */
+    height: auto;
+    border-radius: 50%;
+    animation: rotateImage 0.1s infinite linear; /* Adjust rotation speed here */
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes rotateImage {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="loader">
+    <div class="container">
+      <img id="rotating-image" src="images/moltres.jpeg" alt="Rotating Image">
+    </div>
+  </div>
+</body>
+</html>
