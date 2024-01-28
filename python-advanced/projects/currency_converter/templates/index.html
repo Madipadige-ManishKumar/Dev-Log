@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: yellow;
+        }
+        .conout{
+            background-color: red;
+            border: 5px;
+            border-style:dashed;
+            height: 300px;
+            width: 300px;
+            border-radius:50px;
+            margin-left: 35%;
+            margin-top: 12%;
+            align-items: center;
+        }
+        .cont
+        {
+            align-items: center;
+            display: flex;
+            margin-left: 23%;
+            margin-top: 12%;
+        }
+        .sub
+        {
+            margin-left: 23%;
+            margin-top: 12%;
+
+        }
+        .from
+        {
+            
+        }
+        .cont
+        {
+            left: 20%;
+        }
+    </style>
+</head>
+<body>
+    <form action="/convert">
+        <div class="conout">
+            
+    <div class="cont">
+        
+        <div class="form">
+            
+    <h3>From</h3> 
+    <select name="from" id="">
+        {% for i in currency %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+</div>
+<div>
+    <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+</div>
+<div class="to">
+    <h3>to</h3> 
+    <select name="to" id="">
+        {% for i in currency %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+</div>
+
+    {{result}}
+    <br>
+    <br>
+</div>
+<br>
+<div class="sub">
+<input type="text" name="amount" id="" style="height: 20px; width: 150px;" placeholder="Enter Amount">
+<input type="submit"  style="width: 150px;height: 30px;"  value="submit">
+</div>
+</div>
+</form>
+</body>
+</html>

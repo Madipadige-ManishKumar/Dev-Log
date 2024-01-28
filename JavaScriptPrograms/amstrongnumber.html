@@ -1,0 +1,18 @@
+<script>
+    num =parseInt(prompt('Number'));
+    n2=num
+    n=num.toString();
+    n=parseInt(n.length);
+    sum=0;
+    while(num!=0){
+        n1= parseInt( num%10);
+        sum= parseInt( sum+Math.pow(n1,n));
+        num= parseInt( num/10);
+    }
+    if(sum==n2){
+        document.write("Amstrong number");
+    }
+    else{
+        document.write("Not an amstrong number");
+    }
+</script>
