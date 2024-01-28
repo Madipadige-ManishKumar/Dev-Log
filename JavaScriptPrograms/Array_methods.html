@@ -1,0 +1,22 @@
+<script>
+a = new Array(3);
+a[0]=new Array(3);
+a[1]=new Array(3);
+a[2]=new Array(3);
+for(i=0;i<a.length;i++)
+{
+    for(j=0;j<a[i].length;j++)
+    {
+        a[i][j] = parseInt(prompt("Enter a number for "+i+j +"Row and column respectviely"));
+    }
+}
+
+for(i=0;i<a.length;i++)
+{
+    for(j=0;j<a[i].length;j++)
+    {
+        document.write(a[i][j] +"  ");
+    }
+    document.write("<br>");
+}
+</script>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="dyninput">
+
+    </div>
+    <script>
+        var ro= parseInt(prompt("enter the No.of rows"));
+        var co =parseInt(prompt("enter No.of Cols"));
+        var con = document.getElementById("dyinput");
+        var i=0;
+        var j=0;
+        var count=0;
+        con.innerHTML="hello world";
+        for(i=0;i<ro;i++)
+        {
+
+            for(j=0;j<co;j++)
+            {
+                //var val="<input type='number' name='input'"+count+" place holder='a["+i+"]["+j+"]='/>' "
+                count++;
+                // con.innerHTML+=val;
+            }
+            con.innerHTML="<br>";
+            con.innerHTML="<h1>Welcome</h1>"
+        }
+
+    </script>
+</body>
+</html>

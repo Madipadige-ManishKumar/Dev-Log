@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        a = parseInt(prompt("Enter A value"));
+        b = parseInt(prompt("Enter B value"));
+        c = parseInt(prompt("Enter C value"));
+        if(a==b && b==c){
+            document.write("Equilateral");
+        }
+        else if(a==c && b>a)
+        {
+            document.write("B is Greater");
+        }
+        else if(b==c && a>b)
+        {
+            document.write("A is Greater");
+        }
+        else if (a==c && b<a)
+        {
+            document.write("c,a is Greater than b");
+        }
+        else if (b==c && a<b)
+        {
+            document.write("c,b is Greater than a");
+        }
+        else if (a==b && c<a)
+        {
+            document.write("a,b is Greater than c");
+        }
+        else if (b==a && c>a)
+        {
+            document.write("C is Greater than a,b");
+        }
+        else
+        {
+            document.write(a,b,c);
+        }
+    </script>
+
+</body>
+</html>
