@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        num = parseInt(prompt("Enter a number"));
+
+        n =num;
+        rev=0;
+        while(num!=0)
+        {
+            rev=parseInt(rev*10+num%10)
+            num=parseInt(num/10)
+        }
+        document.write("The Reverse of  The Given Number is ",rev);
+        if(rev==n)
+        {
+            document.write("<br>It is a Palindrome");
+        }
+        else
+        {
+            document.write("<br>It is not a Palindrome");
+        }
+    </script>
+</body>
+</html>
