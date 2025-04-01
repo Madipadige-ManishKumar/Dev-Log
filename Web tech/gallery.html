@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+
+<!-- Gallery Section -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Gallery</h2>
+    <div class="row">
+        <!-- Gallery Image Cards -->
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="https://via.placeholder.com/350x200" alt="Image 1" data-toggle="modal" data-target="#imageModal1">
+            </div>
+        </div>
+        <!-- Additional gallery images... -->
+    </div>
+</div>
+
+<!-- Modal for Enlarged Image -->
+<div class="modal fade" id="imageModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="https://via.placeholder.com/800x500" class="img-fluid" alt="Enlarged Image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
