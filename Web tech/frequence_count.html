@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>frequence count</title>
+        <script type="text/javascript">
+            function freq(){
+                var ar1=[3,'a',3];
+                var fre={};
+                var maxc=0;
+                var item=null;
+                for(var i=0;i<ar1.length;i++){
+                    var item2 =ar1[i];
+                    fre[item2]=(fre[item2] || 0)+1;
+
+                    if (fre[item2]>maxc){
+                        maxc= fre[item2];
+                        item=item2;
+
+                    }
+                }
+                // document.getElementById('res').innerText='${item} (${maxc} times)';
+                document.getElementById('res').innerText=item+' ('+maxc+' times)';
+            }
+        </script>
+        <body>
+            <button onclick="freq()">click</button>
+            <p id="res"></p>
+        </body>
+    </head>
+</html>
