@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            tables
+        </title>
+        <script type="text/javascript">
+            function addRow(tableId, c){
+                var tabEle = document.getElementById(tableId);
+                var newRow = tabEle.insertRow(tabEle.rows.length);
+                console.log(tabEle.rows.length);
+                var newCell;
+                for (var i = 0; i <c.length; i++) {
+                    console.log(newRow.cells.length);
+                    newCell = newRow.insertCell(newRow.cells.length);
+                    newCell.innerHTML = c[i];
+                }
+        return newRow;
+            }
+        </script>
+    </head>
+    <!-- <body>
+        <table id="tblPeople" border="1">
+            <tr>
+                <td>first name</td>
+                <td>middle name</td>
+                <td>last name</td>
+            </tr>
+        </table>
+        <hr>    
+        <form name="formname">
+            <input type="text" name="first" value="first name">
+            <input type="text" name="middle" value="middle name">
+            <input type="text" name="last" value="last name">
+            <br />
+            <br> -->
+            <center><input type="button" value="add name"
+            onclick="addRow(5,6)"></center>
+            <hr>
+
+        <!-- </form> -->
+    </body>
+</html>

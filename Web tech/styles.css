@@ -1,0 +1,34 @@
+/* General Page Styles */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+/* Hover Effects for Links & Buttons */
+a:hover, .btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Customizing the Navbar */
+.navbar {
+    margin-bottom: 20px;
+}
+
+/* Spacing and Alignments for Sections */
+.container {
+    margin-top: 40px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    font-size: 1.25rem;
+}
+
+/* Custom Modal Styles */
+.modal-body img {
+    width: 100%;
+    height: auto;
+}
