@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Statements and Operations</title>
+</head>
+<body>
+    <h5 name="h1" class="myinput" id="m"></h5>
+    <script>
+        var a = parseInt(prompt("Enter the Value of a"));
+        var b = parseInt(prompt("Enter the Value of b"));
+
+        
+        var sum = a + b;
+        var difference = a - b;
+        var product = a * b;
+        var quotient = (b !== 0) ? a / b : "Cannot divide by zero";
+        var modulus = (b !== 0) ? a % b : "Cannot compute modulus by zero";
+
+        
+        var comparisonResult = "";
+        if (a > b) {
+            comparisonResult = "a is greater than b";
+        } else if (a < b) {
+            comparisonResult = "b is greater than a";
+        } else {
+            comparisonResult = "a and b are equal";
+        }
+
+        
+        var operationResult = "";
+        switch (true) {
+            case sum > 10:
+                operationResult = "Sum is greater than 10.";
+                break;
+            case sum < 5:
+                operationResult = "Sum is less than 5.";
+                break;
+            default:
+                operationResult = "Sum is between 5 and 10.";
+        }
+
+        
+        var forLoopResult = "Numbers from 1 to " + a + ": ";
+        for (var i = 1; i <= a; i++) {
+            forLoopResult += i + " ";
+        }
+
+        
+        var whileLoopResult = "Decrementing b: ";
+        var tempB = b;
+        while (tempB > 0) {
+            whileLoopResult += tempB + " ";
+            tempB--;
+        }
+
+        // Display results
+        document.getElementById("m").innerHTML =
+            "Sum: " + sum + "<br>" +
+            "Difference: " + difference + "<br>" +
+            "Product: " + product + "<br>" +
+            "Quotient: " + quotient + "<br>" +
+            "Modulus: " + modulus + "<br>" +
+            "<br>" + comparisonResult + "<br>" +
+            "<br>" + operationResult + "<br>" +
+            "<br>" + forLoopResult + "<br>" +
+            "<br>" + whileLoopResult;
+
+            function goback()
+        {
+            window.history.back(); 
+        }
+    </script>
+    <button onclick="goback()">goback</button>
+    
+</body>
+</html>
