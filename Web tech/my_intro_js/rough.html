@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function changeimage(){
+            var myimg =document.getElementById("myimg");
+            var imgurl = String(myimg.src);
+            console.log(imgurl);
+            
+            if (imgurl ===  ( "https://images.unsplash.com/photo-1529634885322-b17ffaf423ac") ){
+            myimg.src="https://images.unsplash.com/photo-1523275335684-37898b6baf30";
+            console.log("in if 1");
+            
+            }
+            else{
+            myimg.src="https://images.unsplash.com/photo-1529634885322-b17ffaf423ac"
+            console.log("in else 1");
+            
+            }
+            showAlert();
+        }
+
+        function showAlert() {
+            var myimg1=document.getElementById("myimg1");
+            var imgurl = String(myimg1.src);
+            console.log(imgurl);
+            console.log("hello");
+            
+            
+            if (imgurl ===  ( "https://images.unsplash.com/photo-1529634885322-b17ffaf423ac") ){
+            myimg.src="https://images.unsplash.com/photo-1523275335684-37898b6baf30";
+            console.log("in if ");
+            
+            }
+            else{
+            myimg.src="https://images.unsplash.com/photo-1529634885322-b17ffaf423ac"
+            console.log("in else");
+            
+            }
+
+        }
+    </script>
+    <!-- onload="showAlert()"  -->
+    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30"  width="300px" height="300px"  alt="" id="myimg">
+    <img src="https://images.unsplash.com/photo-1529634885322-b17ffaf423ac"  width="300px" height="300px"    alt=""  id="myimg1">
+    <button onclick="changeimage()"  >Change Image</button>
+</body>
+</html>

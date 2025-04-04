@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Window Actions</title>
+    <script>
+        function closeWindow() {
+            window.close();
+        }
+
+        function openWindow() {
+            window.open("https://www.w3schools.com/Jsref/met_win_addeventlistener.asp");
+        }
+
+        function showAlert() {
+            window.alert("This is an alert!");
+        }
+
+        function showConfirm() {
+            let userResponse = window.confirm("Do you want to continue?");
+            alert("User response: " + userResponse);
+        }
+
+        function showPrompt() {
+            let userInput = window.prompt("Please enter something:");
+            alert("You entered: " + userInput);
+        }
+
+        function showInnerHeight() {
+            alert("Inner Height: " + window.innerHeight);
+        }
+
+        function showInnerWidth() {
+            alert("Inner Width: " + window.innerWidth);
+        }
+
+        function showScrollX() {
+            alert("Scroll X position: " + window.scrollX);
+        }
+        function my_writer()
+        {
+            document.getElementById("demo").innerHTML+="salman bhai ";
+        }
+        function goback()
+        {
+            window.history.back(); 
+        }
+        window.addEventListener('mouseover',my_writer);
+        window.addEventListener('click',showAlert);
+    </script>
+</head>
+<body>
+    <h1>Window Actions Example</h1>
+    <p id="demo"></p>
+    <button onclick="closeWindow()">Close Window</button>
+    <button onclick="openWindow()">Open Window</button>
+    <button onclick="showAlert()">Alert</button>
+    <button onclick="showConfirm()">Confirm</button>
+    <button onclick="showPrompt()">Prompt</button>
+    <button onclick="showInnerHeight()">showInnerHeight</button>
+    <button onclick="showInnerWidth()">showInnerWidth</button>
+    <button onclick="showScrollX()">showScrollX</button>
+    <!-- <pre> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae eveniet vero id omnis quaerat similique officiis possimus dolore facilis praesentium. Delectus dolore nihil dolores praesentium velit quisquam, non deserunt doloremque dignissimos natus cumque commodi sit ipsam illo fuga harum, eaque tempora explicabo unde, consectetur cum est. Ullam aspernatur explicabo ut ipsum similique expedita sint nam porro, veniam qui! Laboriosam velit numquam natus, aperiam illo laudantium voluptates officia sint maxime vero neque. Eos tenetur labore aut sunt omnis nisi fugiat earum veritatis voluptates a. Repellendus atque praesentium amet officia qui natus fuga, ab aliquam ducimus dignissimos ullam aut iusto? Quas incidunt nam aliquid praesentium nulla non nisi inventore officiis corporis deleniti ducimus, esse sapiente hic quasi vero velit eum tenetur quod beatae. Esse nam consequatur iste distinctio illum exercitationem, aspernatur quam repellat ad dolor id! Distinctio vero, magnam doloribus omnis laboriosam animi quidem consequuntur dolorem, ipsa, quo ad ducimus possimus perspiciatis impedit saepe tenetur! Sequi distinctio expedita veritatis laudantium at sunt ipsa dolorum corporis asperiores, natus iste saepe atque consequatur ad quas quis adipisci voluptatibus? Quos recusandae nisi tenetur illum corrupti a delectus saepe perspiciatis quia sunt fugit, laboriosam ipsum earum doloribus repudiandae itaque repellendus alias minima iusto nesciunt laborum dignissimos iure incidunt nihil. Temporibus atque fugit est totam. Architecto eius illo ratione facilis sed autem officia? Incidunt repudiandae molestiae aliquid dolore ducimus consectetur! Maiores optio non molestias adipisci numquam inventore officia beatae vitae deleniti, natus consequatur veritatis fugiat. Et molestias blanditiis eaque quasi eius consectetur eum aliquam nesciunt, vel eos hic rerum at natus enim cupiditate vitae sit unde suscipit totam similique? Itaque dolorum in voluptas, provident dolores fugit perspiciatis aliquid necessitatibus culpa praesentium nulla quod perferendis officia similique enim nam! Impedit facilis optio veritatis autem vero iste numquam aliquam sequi repellat. Suscipit eum illo at praesentium tempora, quaerat laboriosam tenetur vel perspiciatis ipsum odit placeat, blanditiis pariatur, sequi aperiam. Culpa inventore animi libero id voluptatem temporibus neque, rerum, sunt quibusdam facere vero. Corporis, corrupti a voluptatem iusto eum distinctio eius consectetur repudiandae esse tenetur delectus excepturi adipisci porro, rerum nulla nam itaque. Magni debitis deserunt corporis dolorum praesentium suscipit numquam, error adipisci optio fugit eveniet. Illo tenetur nobis ea? Mollitia error odit doloremque excepturi harum recusandae officia illum eius quos, aliquam nihil praesentium at optio porro, explicabo eligendi incidunt sed, dolorum voluptates. Ullam alias consequatur, qui delectus aliquid similique modi tempora. Enim, inventore voluptatibus modi debitis, voluptas exercitationem omnis accusantium possimus consequuntur sequi similique animi facere nisi magnam. Nostrum quaerat modi corrupti, quae amet assumenda tenetur molestiae eos repudiandae veniam nobis ipsam perspiciatis, doloremque voluptatem alias laudantium! Minima assumenda sequi maiores quod itaque nostrum porro. Facilis laborum harum cupiditate suscipit nam modi eaque? Provident voluptatibus fuga in numquam, dignissimos aliquid dolores sed quaerat, eos repellendus quisquam quae explicabo placeat facere. Debitis doloribus optio non, numquam aliquam distinctio fuga obcaecati a quae repellendus impedit rem nostrum voluptatum dolore modi illo labore. Quasi ab voluptatibus fugit nihil quaerat. Corrupti consequuntur inventore temporibus eius praesentium maxime aperiam, officia eligendi? Adipisci, qui sed?</pre> -->
+    <button onclick="showScrollX()">showScrollX</button>
+    <button onclick="goback()">goback</button>
+    <a href="index.html">click</a>
+    </body>
+</html>
+
+
