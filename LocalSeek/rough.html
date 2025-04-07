@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - LocalSeek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #121212;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo {
+            color: #4a9fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-left: auto;
+        }
+        
+        .search-container input {
+            padding: 0.6rem;
+            border-radius: 4px 0 0 4px;
+            border: none;
+            background-color: #333;
+            color: white;
+            width: 250px;
+        }
+        
+        .search-container button {
+            padding: 0.6rem 1rem;
+            background-color: #4a9fff;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        /* Filters Sidebar */
+        .filters {
+            width: 250px;
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+        }
+        
+        .filters h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-group h3 {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            color: #dddddd;
+        }
+        
+        .filter-option {
+            margin-bottom: 0.5rem;
+        }
+        
+        .filter-option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .filter-option input {
+            margin-right: 0.5rem;
+        }
+        
+        .range-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .range-filter input {
+            width: 80px;
+            padding: 0.3rem;
+            background-color: #333;
+            border: none;
+            color: white;
+            border-radius: 4px;
+        }
+        
+        .filter-button {
+            width: 100%;
+            padding: 0.7rem;
+            background-color: #4a9fff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        
+        /* Results Section */
+        .results-section {
+            flex: 1;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .results-count {
+            font-size: 1.2rem;
+        }
+        
+        .sort-select {
+            padding: 0.5rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* Store Card */
+        .store-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .store-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .store-image {
+            height: 180px;
+            background-color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .store-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .store-distance {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .store-info {
+            padding: 1rem;
+        }
+        
+        .store-name {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .store-address {
+            color: #aaaaaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .product-details {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #333;
+        }
+        
+        .product-name {
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4a9fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-availability {
+            display: flex;
+            align-items: center;
+            color: #66cc66;
+            font-size: 0.9rem;
+        }
+        
+        .availability-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #66cc66;
+            border-radius: 50%;
+            margin-right: 0.4rem;
+        }
+        
+        .low-stock .availability-dot {
+            background-color: #ffcc00;
+        }
+        
+        .low-stock {
+            color: #ffcc00;
+        }
+        
+        .view-store-btn {
+            display: block;
+            width: 100%;
+            padding: 0.7rem;
+            text-align: center;
+            background-color: transparent;
+            color: #4a9fff;
+            border: 1px solid #4a9fff;
+            border-radius: 4px;
+            margin-top: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .view-store-btn:hover {
+            background-color: rgba(74, 159, 255, 0.1);
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .pagination button {
+            padding: 0.5rem 1rem;
+            margin: 0 0.3rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .pagination button.active {
+            background-color: #4a9fff;
+        }
+        
+        /* Media Queries */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .filters {
+                width: 100%;
+                position: static;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">LocalSeek</a>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Login/SignUp</a>
+        </nav>
+        <div class="search-container">
+            <input type="text" placeholder="Search local items..." value="Headphones">
+            <button>Search</button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Filters Sidebar -->
+        <aside class="filters">
+            <h2>Filters</h2>
+            
+            <div class="filter-group">
+                <h3>Distance</h3>
+                <div class="filter-option">
+                    <label>
+                        <input type="radio" name="distance" checked>
+                        Within 5 miles
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <label>
+                        <input type="radio" name="distance">
+                        Within 10 miles
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <label>
+                        <input type="radio" name="distance">
+                        Within 20 miles
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <label>
+                        <input type="radio" name="distance">
+                        Custom
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <div class="range-filter">
+                    <input type="number" placeholder="Min" value="0">
+                    <span>to</span>
+                    <input type="number" placeholder="Max" value="500">
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Store Type</h3>
+                <div class="filter-option">
+                    <label>
+                        <input type="checkbox" checked>
+                        Electronics Stores
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <label>
+                        <input type="checkbox" checked>
+                        Department Stores
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <label>
+                        <input type="checkbox" checked>
+                        Specialty Shops
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Availability</h3>
+                <div class="filter-option">
+                    <label>
+                        <input type="checkbox" checked>
+                        In Stock
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <label>
+                        <input type="checkbox">
+                        Available for Pickup
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <label>
+                        <input type="checkbox">
+                        Delivery Available
+                    </label>
+                </div>
+            </div>
+            
+            <button class="filter-button">Apply Filters</button>
+        </aside>
+        
+        <!-- Results Section -->
+        <section class="results-section">
+            <div class="results-header">
+                <h1 class="results-count">12 stores found for "Headphones"</h1>
+                <select class="sort-select">
+                    <option>Sort by: Distance</option>
+                    <option>Sort by: Price (low to high)</option>
+                    <option>Sort by: Price (high to low)</option>
+                    <option>Sort by: Popularity</option>
+                </select>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="products-grid">
+                <!-- Store Card 1 -->
+                <div class="store-card">
+                    <div class="store-image">
+                        <img src="/api/placeholder/300/180" alt="TechWorld Store">
+                        <div class="store-distance">0.5 miles</div>
+                    </div>
+                    <div class="store-info">
+                        <h2 class="store-name">TechWorld</h2>
+                        <p class="store-address">123 Main St, Anytown</p>
+                        <div class="product-details">
+                            <h3 class="product-name">Sony WH-1000XM4 Headphones</h3>
+                            <p class="product-price">$349.99</p>
+                            <p class="product-availability">
+                                <span class="availability-dot"></span>
+                                In Stock (5+ available)
+                            </p>
+                        </div>
+                        <a href="#" class="view-store-btn">View Store</a>
+                    </div>
+                </div>
+                
+                <!-- Store Card 2 -->
+                <div class="store-card">
+                    <div class="store-image">
+                        <img src="/api/placeholder/300/180" alt="AudioHaven Store">
+                        <div class="store-distance">1.2 miles</div>
+                    </div>
+                    <div class="store-info">
+                        <h2 class="store-name">AudioHaven</h2>
+                        <p class="store-address">456 Oak Ave, Anytown</p>
+                        <div class="product-details">
+                            <h3 class="product-name">Bose QuietComfort 45</h3>
+                            <p class="product-price">$329.95</p>
+                            <p class="product-availability low-stock">
+                                <span class="availability-dot"></span>
+                                Low Stock (2 left)
+                            </p>
+                        </div>
+                        <a href="#" class="view-store-btn">View Store</a>
+                    </div>
+                </div>
+                
+                <!-- Store Card 3 -->
+                <div class="store-card">
+                    <div class="store-image">
+                        <img src="/api/placeholder/300/180" alt="ElectroMart Store">
+                        <div class="store-distance">1.8 miles</div>
+                    </div>
+                    <div class="store-info">
+                        <h2 class="store-name">ElectroMart</h2>
+                        <p class="store-address">789 Elm St, Anytown</p>
+                        <div class="product-details">
+                            <h3 class="product-name">Apple AirPods Max</h3>
+                            <p class="product-price">$549.00</p>
+                            <p class="product-availability">
+                                <span class="availability-dot"></span>
+                                In Stock (10+ available)
+                            </p>
+                        </div>
+                        <a href="#" class="view-store-btn">View Store</a>
+                    </div>
+                </div>
+                
+                <!-- Store Card 4 -->
+                <div class="store-card">
+                    <div class="store-image">
+                        <img src="/api/placeholder/300/180" alt="SoundCity Store">
+                        <div class="store-distance">2.3 miles</div>
+                    </div>
+                    <div class="store-info">
+                        <h2 class="store-name">SoundCity</h2>
+                        <p class="store-address">101 Pine St, Anytown</p>
+                        <div class="product-details">
+                            <h3 class="product-name">Sennheiser HD 660S</h3>
+                            <p class="product-price">$499.95</p>
+                            <p class="product-availability">
+                                <span class="availability-dot"></span>
+                                In Stock (3 available)
+                            </p>
+                        </div>
+                        <a href="#" class="view-store-btn">View Store</a>
+                    </div>
+                </div>
+                
+                <!-- Store Card 5 -->
+                <div class="store-card">
+                    <div class="store-image">
+                        <img src="/api/placeholder/300/180" alt="MegaElectronics Store">
+                        <div class="store-distance">2.7 miles</div>
+                    </div>
+                    <div class="store-info">
+                        <h2 class="store-name">MegaElectronics</h2>
+                        <p class="store-address">222 Cedar Rd, Anytown</p>
+                        <div class="product-details">
+                            <h3 class="product-name">Beats Studio3 Wireless</h3>
+                            <p class="product-price">$299.99</p>
+                            <p class="product-availability">
+                                <span class="availability-dot"></span>
+                                In Stock (8 available)
+                            </p>
+                        </div>
+                        <a href="#" class="view-store-btn">View Store</a>
+                    </div>
+                </div>
+                
+                <!-- Store Card 6 -->
+                <div class="store-card">
+                    <div class="store-image">
+                        <img src="/api/placeholder/300/180" alt="BestBuy Store">
+                        <div class="store-distance">3.1 miles</div>
+                    </div>
+                    <div class="store-info">
+                        <h2 class="store-name">BestBuy</h2>
+                        <p class="store-address">333 Maple Dr, Anytown</p>
+                        <div class="product-details">
+                            <h3 class="product-name">Sony WH-1000XM5</h3>
+                            <p class="product-price">$399.99</p>
+                            <p class="product-availability low-stock">
+                                <span class="availability-dot"></span>
+                                Low Stock (1 left)
+                            </p>
+                        </div>
+                        <a href="#" class="view-store-btn">View Store</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <button>Previous</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>Next</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
