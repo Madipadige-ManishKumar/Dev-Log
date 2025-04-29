@@ -1,0 +1,47 @@
+/* Custom styles to complement Bootstrap */
+.category-card {
+    transition: transform 0.2s;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+    height: 200px;
+    object-fit: cover;
+}
+
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--bs-primary);
+}
+
+.search-bar {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.rating {
+    color: var(--bs-warning);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-image {
+        height: 150px;
+    }
+    
+    .category-icon {
+        font-size: 1.5rem;
+    }
+}
