@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalSeek - Find what you need, near you</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #121212;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo {
+            color: #4a9fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-left: auto;
+        }
+        
+        .search-container input {
+            padding: 0.6rem;
+            border-radius: 4px 0 0 4px;
+            border: none;
+            background-color: #333;
+            color: white;
+            width: 250px;
+        }
+        
+        .search-container button {
+            padding: 0.6rem 1rem;
+            background-color: #4a9fff;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            padding: 3rem;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding-right: 2rem;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #cccccc;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: #4a9fff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: #3a7fcf;
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            background-color: #1a1a1a;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 220px;
+            margin: 0 1rem 2rem;
+        }
+        
+        .step-icon {
+            background-color: #4a9fff;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .step h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .step p {
+            color: #bbbbbb;
+        }
+        
+        /* User Sections */
+        .user-sections {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .section-box {
+            flex: 1;
+            background-color: #1a1a1a;
+            margin: 0 1rem;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        
+        .section-box h2 {
+            margin-bottom: 1.5rem;
+            color: #4a9fff;
+        }
+        
+        .benefit {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .benefit-icon {
+            margin-right: 1rem;
+            color: #4a9fff;
+            font-size: 1.2rem;
+        }
+        
+        /* Categories Section */
+        .categories {
+            background-color: #1a1a1a;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .category-card {
+            background-color: #333;
+            padding: 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            background-color: #444;
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #4a9fff;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0a0a0a;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        footer p {
+            color: #888888;
+            margin-top: 1rem;
+        }
+        
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                padding: 2rem;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+            
+            .steps-container {
+                flex-direction: column;
+            }
+            
+            .user-sections {
+                flex-direction: column;
+            }
+            
+            .section-box {
+                margin: 1rem 0;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">LocalSeek</a>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Login/SignUp</a>
+        </nav>
+        <div class="search-container">
+            <input type="text" placeholder="Search local items...">
+            <button>Search</button>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Local Seek</h1>
+            <p>Find what you need, near you.</p>
+            <a href="#" class="cta-button">Search For a Product</a>
+        </div>
+        <div class="hero-image">
+            <img src="/api/placeholder/600/400" alt="Digital marketplace illustration">
+        </div>
+    </section>
+    
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-icon">1</div>
+                <h3>Search Products</h3>
+                <p>Enter the item you're looking for in our search bar</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <h3>Find Nearby Stores</h3>
+                <p>View a list of local retailers that have your item in stock</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <h3>Compare Options</h3>
+                <p>Check prices, availability, and distance to find the best option</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <h3>Visit or Order</h3>
+                <p>Go to the store directly or arrange for delivery/pickup</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- User Sections -->
+    <section class="user-sections">
+        <div class="section-box">
+            <h2>For Buyers</h2>
+            <div class="benefit">
+                <div class="benefit-icon">✓</div>
+                <div>
+                    <h3>Save Time</h3>
+                    <p>Quickly find nearby stores with the items you need</p>
+                </div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">✓</div>
+                <div>
+                    <h3>Compare Prices</h3>
+                    <p>Find the best deals in your local area</p>
+                </div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">✓</div>
+                <div>
+                    <h3>Support Local</h3>
+                    <p>Shop from businesses in your community</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-box">
+            <h2>For Retailers</h2>
+            <div class="benefit">
+                <div class="benefit-icon">✓</div>
+                <div>
+                    <h3>Increase Visibility</h3>
+                    <p>Get discovered by local shoppers looking for your products</p>
+                </div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">✓</div>
+                <div>
+                    <h3>Manage Inventory</h3>
+                    <p>Update your product availability in real-time</p>
+                </div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">✓</div>
+                <div>
+                    <h3>Customer Insights</h3>
+                    <p>Track what local customers are searching for</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="categories">
+        <h2 class="section-title">Popular Categories</h2>
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">🍎</div>
+                <h3>Groceries</h3>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">👕</div>
+                <h3>Clothing</h3>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">💻</div>
+                <h3>Electronics</h3>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">💊</div>
+                <h3>Pharmacy</h3>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🔧</div>
+                <h3>Hardware</h3>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">📚</div>
+                <h3>Books</h3>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <a href="#" class="logo">LocalSeek</a>
+        <p>&copy; 2025 LocalSeek. Find what you need, near you.</p>
+    </footer>
+</body>
+</html>
